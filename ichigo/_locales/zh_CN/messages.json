@@ -1,0 +1,248 @@
+{
+    "extName": {
+        "message": "漫画翻译器🍓"
+    },
+    "extDescription": {
+        "message": "支持日语、韩语和中文的漫画翻译器"
+    },
+    "translationPanelInstructions": {
+        "message": "点击并拖动以创建翻译面板。\n下方的所有图片将自动翻译。\n请覆盖整张图片，而不仅仅是气泡文字！"
+    },
+    "toggleTranslationsContextMenu": {
+        "message": "切换翻译显示"
+    },
+    "translateTabToggleLabel": {
+        "message": "翻译标签页"
+    },
+    "emailInputPlaceholder": {
+        "message": "电子邮箱"
+    },
+    "passwordInputPlaceholder": {
+        "message": "密码"
+    },
+    "uploadFilesLabel": {
+        "message": "或 %UPLOAD_FILES%"
+    },
+    "uploadFilesText": {
+        "message": "上传文件"
+    },
+    "toolsBottomNavButton": {
+        "message": "工具"
+    },
+    "logInBottomNavButton": {
+        "message": "登录"
+    },
+    "settingsBottomNavButton": {
+        "message": "设置"
+    },
+    "loadingLabel": {
+        "message": "加载中…"
+    },
+    "freeTierLabel": {
+        "message": "免费版"
+    },
+    "tier1SupporterLabel": {
+        "message": "一级支持者 <3"
+    },
+    "tier2SupporterLabel": {
+        "message": "二级支持者 <3"
+    },
+    "unlockUnlimitedTooltip": {
+        "message": "解锁无限翻译"
+    },
+    "logOutButton": {
+        "message": "退出登录"
+    },
+    "siteAccessError": {
+        "message": "请将网站访问权限设置为“在所有网站上”。"
+    },
+    "siteAccessErrorSafariMacOS": {
+        "message": "为了登录，请打开 Safari 偏好设置 (⌘,) 的扩展标签页，并允许漫画翻译器在所有网站上运行。"
+    },
+    "siteAccessErrorSafariIOS": {
+        "message": "为了登录，请打开设置 > Safari 浏览器 > 扩展，并允许漫画翻译器在所有网站上运行。"
+    },
+    "changeSiteAccessButton": {
+        "message": "更改网站访问权限"
+    },
+    "rateButton": {
+        "message": "评分"
+    },
+    "otherToolsLabel": {
+        "message": "其他工具"
+    },
+    "translationPanelLabel": {
+        "message": "翻译面板"
+    },
+    "mangaFontStyleLabel": {
+        "message": "漫画字体样式"
+    },
+    "mangaFontColorLabel": {
+        "message": "漫画字体颜色"
+    },
+    "translationModel": {
+        "message": "翻译器"
+    },
+    "selectModelLabel": {
+        "message": "选择翻译器"
+    },
+    "lockedTier1Label": {
+        "message": "(锁定：一级)"
+    },
+    "lockedTier2Label": {
+        "message": "(锁定：二级)"
+    },
+    "deepseekv3Translator": {
+        "message": "Deepseek v3"
+    },
+    "deepseekv3TranslatorLocked": {
+        "message": "Deepseek v3 (锁定：一级)"
+    },
+    "deeplTranslator": {
+        "message": "DeepL"
+    },
+    "deeplTranslatorLocked": {
+        "message": "DeepL (锁定：一级)"
+    },
+    "geminiFlash2Translator": {
+        "message": "Gemini Flash 2.0"
+    },
+    "geminiFlash2TranslatorLocked": {
+        "message": "Gemini Flash 2.0 (锁定：一级)"
+    },
+    "gpt4oMiniTranslator": {
+        "message": "GPT-4o mini"
+    },
+    "gpt4oTranslator": {
+        "message": "GPT-4o"
+    },
+    "gpt4oTranslatorLocked": {
+        "message": "GPT-4o (锁定：二级)"
+    },
+    "fetchErrorMessage": {
+        "message": "该网站已屏蔽扩展程序。请使用 ichigo unlocker 解锁。"
+    },
+    "siteAccessErrorMessage": {
+        "message": "请将 `网站访问权限` 设置为 `在所有网站上`，否则扩展程序无法翻译。"
+    },
+    "siteAccessErrorMessageSafari": {
+        "message": "打开 Safari 设置并允许漫画翻译器在所有网站上运行，否则扩展程序无法翻译。"
+    },
+    "feedServerHamstersMessage": {
+        "message": "投喂服务器仓鼠。"
+    },
+    "upgradeButton": {
+        "message": "升级"
+    },
+    "logInButton": {
+        "message": "登录"
+    },
+    "logInButtonIOSAlert": {
+        "message": "如需登录，请打开漫画翻译器扩展界面并切换到“登录”标签页。请确保在 Safari 设置中允许漫画翻译器在所有网站上运行。"
+    },
+    "downloadButton": {
+        "message": "下载"
+    },
+    "settingsButton": {
+        "message": "设置"
+    },
+    "registerButton": {
+        "message": "注册"
+    },
+    "deleteAccount": {
+        "message": "删除账户"
+    },
+    "serverConnectFailureMessage": {
+        "message": "无法连接到服务器"
+    },
+    "checkInternetConnectionMessage": {
+        "message": "请检查您的网络连接。"
+    },
+    "serverDownMessage": {
+        "message": "服务器正在进行临时维护或遇到问题。"
+    },
+    "localFileAccessMessage": {
+        "message": "要翻译本地文件，请在接下来的屏幕中开启 `允许访问文件网址`。然后刷新页面。"
+    },
+    "emailTakenMessage": {
+        "message": "该邮箱已被占用。"
+    },
+    "emailNotFoundMessage": {
+        "message": "该邮箱未注册。"
+    },
+    "incorrectPasswordMessage": {
+        "message": "密码错误。"
+    },
+    "invalidRegistrationMessage": {
+        "message": "请输入有效的邮箱和密码进行注册。"
+    },
+    "unknownRegistrationErrorMessage": {
+        "message": "发生未知错误。请检查网络连接并稍后重试。"
+    },
+    "authLoadingMessage": {
+        "message": "加载中"
+    },
+    "resetPasswordLink": {
+        "message": "重置密码"
+    },
+    "translateToLabel": {
+        "message": "翻译为"
+    },
+    "translateToJapaneseLabel": {
+        "message": "日语"
+    },
+    "translateToKoreanLabel": {
+        "message": "韩语"
+    },
+    "translateToPolishLabel": {
+        "message": "波兰语"
+    },
+    "translateToChineseSimplifiedLabel": {
+        "message": "简体中文"
+    },
+    "translateToChineseTraditionalLabel": {
+        "message": "繁体中文"
+    },
+    "translateToEnglishLabel": {
+        "message": "英语"
+    },
+    "translateToGermanLabel": {
+        "message": "德语"
+    },
+    "translateToSpanishLabel": {
+        "message": "西班牙语"
+    },
+    "translateToFrenchLabel": {
+        "message": "法语"
+    },
+    "translateToItalianLabel": {
+        "message": "意大利语"
+    },
+    "translateToPortugueseLabel": {
+        "message": "葡萄牙语"
+    },
+    "translateToBrazilianPortugueseLabel": {
+        "message": "巴西葡萄牙语"
+    },
+    "translateToRussianLabel": {
+        "message": "俄语"
+    },
+    "translateToThaiLabel": {
+        "message": "泰语"
+    },
+    "translateToVietnameseLabel": {
+        "message": "越南语"
+    },
+    "translateToIndonesianLabel": {
+        "message": "印尼语"
+    },
+    "translateToArabicLabel": {
+        "message": "阿拉伯语"
+    },
+    "translateToHindiLabel": {
+        "message": "印地语"
+    },
+    "queuedMessage": {
+        "message": "已排队"
+    }
+}

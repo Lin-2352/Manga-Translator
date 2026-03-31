@@ -1,0 +1,248 @@
+{
+    "extName": {
+        "message": "Manga Translator🍓"
+    },
+    "extDescription": {
+        "message": "日本語、韓国語、中国語対応のマンガ翻訳ツール"
+    },
+    "translationPanelInstructions": {
+        "message": "クリック＆ドラッグで翻訳パネルを作成します。\nその下のすべての画像が自動的に翻訳されます。\n吹き出しだけでなく、画像全体を覆ってください！"
+    },
+    "toggleTranslationsContextMenu": {
+        "message": "翻訳の切り替え"
+    },
+    "translateTabToggleLabel": {
+        "message": "翻訳タブ"
+    },
+    "emailInputPlaceholder": {
+        "message": "メールアドレス"
+    },
+    "passwordInputPlaceholder": {
+        "message": "パスワード"
+    },
+    "uploadFilesLabel": {
+        "message": "または %UPLOAD_FILES%"
+    },
+    "uploadFilesText": {
+        "message": "ファイルをアップロード"
+    },
+    "toolsBottomNavButton": {
+        "message": "ツール"
+    },
+    "logInBottomNavButton": {
+        "message": "ログイン"
+    },
+    "settingsBottomNavButton": {
+        "message": "設定"
+    },
+    "loadingLabel": {
+        "message": "読み込み中…"
+    },
+    "freeTierLabel": {
+        "message": "無料プラン"
+    },
+    "tier1SupporterLabel": {
+        "message": "Tier 1 サポーター <3"
+    },
+    "tier2SupporterLabel": {
+        "message": "Tier 2 サポーター <3"
+    },
+    "unlockUnlimitedTooltip": {
+        "message": "無制限の翻訳をアンロック"
+    },
+    "logOutButton": {
+        "message": "ログアウト"
+    },
+    "siteAccessError": {
+        "message": "サイトへのアクセスを「すべてのサイト」に設定してください。"
+    },
+    "siteAccessErrorSafariMacOS": {
+        "message": "ログインするには、Safariの環境設定 (⌘,) の拡張機能タブを開き、すべてのサイトで Manga Translator を許可してください。"
+    },
+    "siteAccessErrorSafariIOS": {
+        "message": "ログインするには、設定 > Safari > 拡張機能を開き、すべてのサイトで Manga Translator を許可してください。"
+    },
+    "changeSiteAccessButton": {
+        "message": "サイトアクセスを変更"
+    },
+    "rateButton": {
+        "message": "評価する"
+    },
+    "otherToolsLabel": {
+        "message": "その他のツール"
+    },
+    "translationPanelLabel": {
+        "message": "翻訳パネル"
+    },
+    "mangaFontStyleLabel": {
+        "message": "マンガのフォントスタイル"
+    },
+    "mangaFontColorLabel": {
+        "message": "マンガのフォント色"
+    },
+    "translationModel": {
+        "message": "翻訳エンジン"
+    },
+    "selectModelLabel": {
+        "message": "翻訳エンジンの選択"
+    },
+    "lockedTier1Label": {
+        "message": "(ロック中: Tier 1)"
+    },
+    "lockedTier2Label": {
+        "message": "(ロック中: Tier 2)"
+    },
+    "deepseekv3Translator": {
+        "message": "Deepseek v3"
+    },
+    "deepseekv3TranslatorLocked": {
+        "message": "Deepseek v3 (ロック中: Tier 1)"
+    },
+    "deeplTranslator": {
+        "message": "DeepL"
+    },
+    "deeplTranslatorLocked": {
+        "message": "DeepL (ロック中: Tier 1)"
+    },
+    "geminiFlash2Translator": {
+        "message": "Gemini Flash 2.0"
+    },
+    "geminiFlash2TranslatorLocked": {
+        "message": "Gemini Flash 2.0 (ロック中: Tier 1)"
+    },
+    "gpt4oMiniTranslator": {
+        "message": "GPT-4o mini"
+    },
+    "gpt4oTranslator": {
+        "message": "GPT-4o"
+    },
+    "gpt4oTranslatorLocked": {
+        "message": "GPT-4o (ロック中: Tier 2)"
+    },
+    "fetchErrorMessage": {
+        "message": "このサイトは拡張機能をブロックしています。ichigo unlockerで解除してください。"
+    },
+    "siteAccessErrorMessage": {
+        "message": "`サイトへのアクセス`を`すべてのサイト`に設定しないと、拡張機能は翻訳できません。"
+    },
+    "siteAccessErrorMessageSafari": {
+        "message": "Safariの設定を開き、すべてのサイトで Manga Translator を許可しないと、拡張機能は翻訳できません。"
+    },
+    "feedServerHamstersMessage": {
+        "message": "サーバーのハムスターに餌をあげる。"
+    },
+    "upgradeButton": {
+        "message": "アップグレード"
+    },
+    "logInButton": {
+        "message": "ログイン"
+    },
+    "logInButtonIOSAlert": {
+        "message": "ログインするには、Manga Translator拡張機能のUIを開き、「ログイン」タブに移動してください。Safariの設定ですべてのサイトでのManga Translatorの使用が許可されていることを確認してください。"
+    },
+    "downloadButton": {
+        "message": "ダウンロード"
+    },
+    "settingsButton": {
+        "message": "設定"
+    },
+    "registerButton": {
+        "message": "登録"
+    },
+    "deleteAccount": {
+        "message": "アカウント削除"
+    },
+    "serverConnectFailureMessage": {
+        "message": "サーバーに接続できませんでした"
+    },
+    "checkInternetConnectionMessage": {
+        "message": "インターネット接続を確認してください。"
+    },
+    "serverDownMessage": {
+        "message": "サーバーは一時的なメンテナンス中か、問題が発生しています。"
+    },
+    "localFileAccessMessage": {
+        "message": "ローカルファイルを翻訳するには、次の画面で「ファイルのURLへのアクセスを許可する」をオンにしてください。その後、ページを更新してください。"
+    },
+    "emailTakenMessage": {
+        "message": "そのメールアドレスは既に使用されています。"
+    },
+    "emailNotFoundMessage": {
+        "message": "このメールアドレスは登録されていません。"
+    },
+    "incorrectPasswordMessage": {
+        "message": "パスワードが間違っています。"
+    },
+    "invalidRegistrationMessage": {
+        "message": "登録するには有効なメールアドレスとパスワードを入力してください。"
+    },
+    "unknownRegistrationErrorMessage": {
+        "message": "不明なエラーが発生しました。インターネット接続を確認し、しばらくしてからもう一度お試しください。"
+    },
+    "authLoadingMessage": {
+        "message": "読み込み中"
+    },
+    "resetPasswordLink": {
+        "message": "パスワードをリセット"
+    },
+    "translateToLabel": {
+        "message": "翻訳先言語"
+    },
+    "translateToJapaneseLabel": {
+        "message": "日本語"
+    },
+    "translateToKoreanLabel": {
+        "message": "韓国語"
+    },
+    "translateToPolishLabel": {
+        "message": "ポーランド語"
+    },
+    "translateToChineseSimplifiedLabel": {
+        "message": "中国語 (簡体字)"
+    },
+    "translateToChineseTraditionalLabel": {
+        "message": "中国語 (繁体字)"
+    },
+    "translateToEnglishLabel": {
+        "message": "英語"
+    },
+    "translateToGermanLabel": {
+        "message": "ドイツ語"
+    },
+    "translateToSpanishLabel": {
+        "message": "スペイン語"
+    },
+    "translateToFrenchLabel": {
+        "message": "フランス語"
+    },
+    "translateToItalianLabel": {
+        "message": "イタリア語"
+    },
+    "translateToPortugueseLabel": {
+        "message": "ポルトガル語"
+    },
+    "translateToBrazilianPortugueseLabel": {
+        "message": "ポルトガル語 (ブラジル)"
+    },
+    "translateToRussianLabel": {
+        "message": "ロシア語"
+    },
+    "translateToThaiLabel": {
+        "message": "タイ語"
+    },
+    "translateToVietnameseLabel": {
+        "message": "ベトナム語"
+    },
+    "translateToIndonesianLabel": {
+        "message": "インドネシア語"
+    },
+    "translateToArabicLabel": {
+        "message": "アラビア語"
+    },
+    "translateToHindiLabel": {
+        "message": "ヒンディー語"
+    },
+    "queuedMessage": {
+        "message": "待機中"
+    }
+}

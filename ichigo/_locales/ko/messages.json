@@ -1,0 +1,248 @@
+{
+    "extName": {
+        "message": "만화 번역기🍓"
+    },
+    "extDescription": {
+        "message": "일본어, 한국어, 중국어 만화 번역기"
+    },
+    "translationPanelInstructions": {
+        "message": "클릭하고 드래그하여 번역 패널을 생성하세요.\n 아래에 있는 모든 이미지가 자동으로 번역됩니다.\n 말풍선뿐만 아니라 이미지 전체를 덮으세요!"
+    },
+    "toggleTranslationsContextMenu": {
+        "message": "번역 켜기/끄기"
+    },
+    "translateTabToggleLabel": {
+        "message": "탭 번역"
+    },
+    "emailInputPlaceholder": {
+        "message": "이메일"
+    },
+    "passwordInputPlaceholder": {
+        "message": "비밀번호"
+    },
+    "uploadFilesLabel": {
+        "message": "또는 %UPLOAD_FILES%"
+    },
+    "uploadFilesText": {
+        "message": "파일 업로드"
+    },
+    "toolsBottomNavButton": {
+        "message": "도구"
+    },
+    "logInBottomNavButton": {
+        "message": "로그인"
+    },
+    "settingsBottomNavButton": {
+        "message": "설정"
+    },
+    "loadingLabel": {
+        "message": "로딩 중…"
+    },
+    "freeTierLabel": {
+        "message": "무료 등급"
+    },
+    "tier1SupporterLabel": {
+        "message": "1단계 후원자 <3"
+    },
+    "tier2SupporterLabel": {
+        "message": "2단계 후원자 <3"
+    },
+    "unlockUnlimitedTooltip": {
+        "message": "무제한 번역 잠금 해제"
+    },
+    "logOutButton": {
+        "message": "로그아웃"
+    },
+    "siteAccessError": {
+        "message": "사이트 액세스를 \"모든 사이트에서\"로 설정해 주세요."
+    },
+    "siteAccessErrorSafariMacOS": {
+        "message": "로그인하려면 Safari 환경설정(⌘,)의 확장 프로그램 탭을 열고 모든 사이트에서 만화 번역기를 허용해 주세요."
+    },
+    "siteAccessErrorSafariIOS": {
+        "message": "로그인하려면 설정 > Safari > 확장 프로그램으로 이동하여 모든 사이트에서 만화 번역기를 허용해 주세요."
+    },
+    "changeSiteAccessButton": {
+        "message": "사이트 액세스 변경"
+    },
+    "rateButton": {
+        "message": "평가하기"
+    },
+    "otherToolsLabel": {
+        "message": "기타 도구"
+    },
+    "translationPanelLabel": {
+        "message": "번역 패널"
+    },
+    "mangaFontStyleLabel": {
+        "message": "만화 폰트 스타일"
+    },
+    "mangaFontColorLabel": {
+        "message": "만화 폰트 색상"
+    },
+    "translationModel": {
+        "message": "번역기"
+    },
+    "selectModelLabel": {
+        "message": "번역기 선택"
+    },
+    "lockedTier1Label": {
+        "message": "(잠김: 1단계)"
+    },
+    "lockedTier2Label": {
+        "message": "(잠김: 2단계)"
+    },
+    "deepseekv3Translator": {
+        "message": "Deepseek v3"
+    },
+    "deepseekv3TranslatorLocked": {
+        "message": "Deepseek v3 (잠김: 1단계)"
+    },
+    "deeplTranslator": {
+        "message": "DeepL"
+    },
+    "deeplTranslatorLocked": {
+        "message": "DeepL (잠김: 1단계)"
+    },
+    "geminiFlash2Translator": {
+        "message": "Gemini Flash 2.0"
+    },
+    "geminiFlash2TranslatorLocked": {
+        "message": "Gemini Flash 2.0 (잠김: 1단계)"
+    },
+    "gpt4oMiniTranslator": {
+        "message": "GPT-4o mini"
+    },
+    "gpt4oTranslator": {
+        "message": "GPT-4o"
+    },
+    "gpt4oTranslatorLocked": {
+        "message": "GPT-4o (잠김: 2단계)"
+    },
+    "fetchErrorMessage": {
+        "message": "이 사이트는 확장 프로그램을 차단했습니다. ichigo unlocker로 차단을 해제하세요."
+    },
+    "siteAccessErrorMessage": {
+        "message": "`사이트 액세스`를 `모든 사이트에서`로 설정하지 않으면 확장 프로그램이 번역할 수 없습니다."
+    },
+    "siteAccessErrorMessageSafari": {
+        "message": "Safari 설정을 열고 모든 사이트에서 만화 번역기를 허용하지 않으면 확장 프로그램이 번역할 수 없습니다."
+    },
+    "feedServerHamstersMessage": {
+        "message": "서버 햄스터에게 먹이 주기."
+    },
+    "upgradeButton": {
+        "message": "업그레이드"
+    },
+    "logInButton": {
+        "message": "로그인"
+    },
+    "logInButtonIOSAlert": {
+        "message": "로그인하려면 만화 번역기 확장 프로그램 UI의 '로그인' 탭을 여세요. Safari 설정에서 만화 번역기가 모든 사이트에서 허용되어 있는지 확인하세요."
+    },
+    "downloadButton": {
+        "message": "다운로드"
+    },
+    "settingsButton": {
+        "message": "설정"
+    },
+    "registerButton": {
+        "message": "가입하기"
+    },
+    "deleteAccount": {
+        "message": "계정 삭제"
+    },
+    "serverConnectFailureMessage": {
+        "message": "서버에 연결할 수 없습니다"
+    },
+    "checkInternetConnectionMessage": {
+        "message": "인터넷 연결을 확인하세요."
+    },
+    "serverDownMessage": {
+        "message": "서버가 임시 점검 중이거나 문제가 발생했습니다."
+    },
+    "localFileAccessMessage": {
+        "message": "로컬 파일을 번역하려면 다음 화면에서 `파일 URL에 대한 액세스 허용`을 켜세요. 그런 다음 페이지를 새로 고침하세요."
+    },
+    "emailTakenMessage": {
+        "message": "이미 사용 중인 이메일입니다."
+    },
+    "emailNotFoundMessage": {
+        "message": "등록되지 않은 이메일입니다."
+    },
+    "incorrectPasswordMessage": {
+        "message": "비밀번호가 틀렸습니다."
+    },
+    "invalidRegistrationMessage": {
+        "message": "가입하려면 유효한 이메일과 비밀번호를 입력하세요."
+    },
+    "unknownRegistrationErrorMessage": {
+        "message": "알 수 없는 오류가 발생했습니다. 인터넷 연결을 확인하고 잠시 후 다시 시도하세요."
+    },
+    "authLoadingMessage": {
+        "message": "로딩 중"
+    },
+    "resetPasswordLink": {
+        "message": "비밀번호 재설정"
+    },
+    "translateToLabel": {
+        "message": "번역 대상 언어"
+    },
+    "translateToJapaneseLabel": {
+        "message": "일본어"
+    },
+    "translateToKoreanLabel": {
+        "message": "한국어"
+    },
+    "translateToPolishLabel": {
+        "message": "폴란드어"
+    },
+    "translateToChineseSimplifiedLabel": {
+        "message": "중국어 간체"
+    },
+    "translateToChineseTraditionalLabel": {
+        "message": "중국어 번체"
+    },
+    "translateToEnglishLabel": {
+        "message": "영어"
+    },
+    "translateToGermanLabel": {
+        "message": "독일어"
+    },
+    "translateToSpanishLabel": {
+        "message": "스페인어"
+    },
+    "translateToFrenchLabel": {
+        "message": "프랑스어"
+    },
+    "translateToItalianLabel": {
+        "message": "이탈리아어"
+    },
+    "translateToPortugueseLabel": {
+        "message": "포르투갈어"
+    },
+    "translateToBrazilianPortugueseLabel": {
+        "message": "브라질 포르투갈어"
+    },
+    "translateToRussianLabel": {
+        "message": "러시아어"
+    },
+    "translateToThaiLabel": {
+        "message": "태국어"
+    },
+    "translateToVietnameseLabel": {
+        "message": "베트남어"
+    },
+    "translateToIndonesianLabel": {
+        "message": "인도네시아어"
+    },
+    "translateToArabicLabel": {
+        "message": "아랍어"
+    },
+    "translateToHindiLabel": {
+        "message": "힌디어"
+    },
+    "queuedMessage": {
+        "message": "대기 중"
+    }
+}

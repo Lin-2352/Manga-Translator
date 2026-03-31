@@ -1,0 +1,248 @@
+{
+    "extName": {
+        "message": "Traductor de Manga🍓"
+    },
+    "extDescription": {
+        "message": "Traductor de manga para japonés, coreano y chino"
+    },
+    "translationPanelInstructions": {
+        "message": "Haz clic y arrastra para crear un Panel de Traducción.\n Todas las imágenes debajo se traducirán automáticamente.\n ¡Cubre la imagen COMPLETA, no solo los bocadillos de texto!"
+    },
+    "toggleTranslationsContextMenu": {
+        "message": "Alternar traducciones"
+    },
+    "translateTabToggleLabel": {
+        "message": "traducir pestaña"
+    },
+    "emailInputPlaceholder": {
+        "message": "correo electrónico"
+    },
+    "passwordInputPlaceholder": {
+        "message": "contraseña"
+    },
+    "uploadFilesLabel": {
+        "message": "o %UPLOAD_FILES%"
+    },
+    "uploadFilesText": {
+        "message": "subir archivos"
+    },
+    "toolsBottomNavButton": {
+        "message": "herramientas"
+    },
+    "logInBottomNavButton": {
+        "message": "iniciar sesión"
+    },
+    "settingsBottomNavButton": {
+        "message": "configuración"
+    },
+    "loadingLabel": {
+        "message": "cargando…"
+    },
+    "freeTierLabel": {
+        "message": "nivel gratuito"
+    },
+    "tier1SupporterLabel": {
+        "message": "colaborador nivel 1 <3"
+    },
+    "tier2SupporterLabel": {
+        "message": "colaborador nivel 2 <3"
+    },
+    "unlockUnlimitedTooltip": {
+        "message": "Desbloquear traducciones ilimitadas"
+    },
+    "logOutButton": {
+        "message": "cerrar sesión"
+    },
+    "siteAccessError": {
+        "message": "Por favor, establece el acceso al sitio en \"En todos los sitios\"."
+    },
+    "siteAccessErrorSafariMacOS": {
+        "message": "Para iniciar sesión, abre las Preferencias de Safari (⌘,), ve a la pestaña Extensiones y permite Manga Translator en todos los sitios."
+    },
+    "siteAccessErrorSafariIOS": {
+        "message": "Para iniciar sesión, abre Ajustes > Safari > Extensiones y permite Manga Translator en todos los sitios."
+    },
+    "changeSiteAccessButton": {
+        "message": "cambiar acceso al sitio"
+    },
+    "rateButton": {
+        "message": "valorar"
+    },
+    "otherToolsLabel": {
+        "message": "otras herramientas"
+    },
+    "translationPanelLabel": {
+        "message": "panel de traducción"
+    },
+    "mangaFontStyleLabel": {
+        "message": "estilo de fuente de manga"
+    },
+    "mangaFontColorLabel": {
+        "message": "color de fuente de manga"
+    },
+    "translationModel": {
+        "message": "traductor"
+    },
+    "selectModelLabel": {
+        "message": "seleccionar traductor"
+    },
+    "lockedTier1Label": {
+        "message": "(bloqueado: nivel 1)"
+    },
+    "lockedTier2Label": {
+        "message": "(bloqueado: nivel 2)"
+    },
+    "deepseekv3Translator": {
+        "message": "Deepseek v3"
+    },
+    "deepseekv3TranslatorLocked": {
+        "message": "Deepseek v3 (bloqueado: nivel 1)"
+    },
+    "deeplTranslator": {
+        "message": "DeepL"
+    },
+    "deeplTranslatorLocked": {
+        "message": "DeepL (bloqueado: nivel 1)"
+    },
+    "geminiFlash2Translator": {
+        "message": "Gemini Flash 2.0"
+    },
+    "geminiFlash2TranslatorLocked": {
+        "message": "Gemini Flash 2.0 (bloqueado: nivel 1)"
+    },
+    "gpt4oMiniTranslator": {
+        "message": "GPT-4o mini"
+    },
+    "gpt4oTranslator": {
+        "message": "GPT-4o"
+    },
+    "gpt4oTranslatorLocked": {
+        "message": "GPT-4o (bloqueado: nivel 2)"
+    },
+    "fetchErrorMessage": {
+        "message": "Este sitio ha bloqueado las extensiones. Desbloquéalo con ichigo unlocker."
+    },
+    "siteAccessErrorMessage": {
+        "message": "Establece el `Acceso al sitio` en `En todos los sitios` o la extensión no podrá traducir."
+    },
+    "siteAccessErrorMessageSafari": {
+        "message": "Abre los ajustes de Safari y permite Manga Translator en todos los sitios o la extensión no podrá traducir."
+    },
+    "feedServerHamstersMessage": {
+        "message": "Alimenta a los hámsters del servidor."
+    },
+    "upgradeButton": {
+        "message": "mejorar"
+    },
+    "logInButton": {
+        "message": "iniciar sesión"
+    },
+    "logInButtonIOSAlert": {
+        "message": "Para iniciar sesión, abre la interfaz de la extensión Manga Translator en la pestaña 'Iniciar sesión'. Asegúrate de que Manga Translator esté permitido en todos los sitios en los ajustes de Safari."
+    },
+    "downloadButton": {
+        "message": "descargar"
+    },
+    "settingsButton": {
+        "message": "configuración"
+    },
+    "registerButton": {
+        "message": "registrarse"
+    },
+    "deleteAccount": {
+        "message": "eliminar cuenta"
+    },
+    "serverConnectFailureMessage": {
+        "message": "No se pudo conectar con el servidor"
+    },
+    "checkInternetConnectionMessage": {
+        "message": "Comprueba tu conexión a internet."
+    },
+    "serverDownMessage": {
+        "message": "El servidor está caído por mantenimiento temporal o tiene problemas."
+    },
+    "localFileAccessMessage": {
+        "message": "Para traducir archivos locales, activa `Permitir acceso a URL de archivo` en la siguiente pantalla. Luego actualiza la página."
+    },
+    "emailTakenMessage": {
+        "message": "El correo electrónico ya está en uso."
+    },
+    "emailNotFoundMessage": {
+        "message": "Este correo electrónico no está registrado."
+    },
+    "incorrectPasswordMessage": {
+        "message": "Contraseña incorrecta."
+    },
+    "invalidRegistrationMessage": {
+        "message": "Por favor, introduce un correo y una contraseña válidos para registrarte."
+    },
+    "unknownRegistrationErrorMessage": {
+        "message": "Ocurrió un error desconocido. Comprueba tu conexión a internet e inténtalo de nuevo en breve."
+    },
+    "authLoadingMessage": {
+        "message": "cargando"
+    },
+    "resetPasswordLink": {
+        "message": "restablecer contraseña"
+    },
+    "translateToLabel": {
+        "message": "traducir al"
+    },
+    "translateToJapaneseLabel": {
+        "message": "Japonés"
+    },
+    "translateToKoreanLabel": {
+        "message": "Coreano"
+    },
+    "translateToPolishLabel": {
+        "message": "Polaco"
+    },
+    "translateToChineseSimplifiedLabel": {
+        "message": "Chino simplificado"
+    },
+    "translateToChineseTraditionalLabel": {
+        "message": "Chino tradicional"
+    },
+    "translateToEnglishLabel": {
+        "message": "Inglés"
+    },
+    "translateToGermanLabel": {
+        "message": "Alemán"
+    },
+    "translateToSpanishLabel": {
+        "message": "Español"
+    },
+    "translateToFrenchLabel": {
+        "message": "Francés"
+    },
+    "translateToItalianLabel": {
+        "message": "Italiano"
+    },
+    "translateToPortugueseLabel": {
+        "message": "Portugués"
+    },
+    "translateToBrazilianPortugueseLabel": {
+        "message": "Portugués de Brasil"
+    },
+    "translateToRussianLabel": {
+        "message": "Ruso"
+    },
+    "translateToThaiLabel": {
+        "message": "Tailandés"
+    },
+    "translateToVietnameseLabel": {
+        "message": "Vietnamita"
+    },
+    "translateToIndonesianLabel": {
+        "message": "Indonesio"
+    },
+    "translateToArabicLabel": {
+        "message": "Árabe"
+    },
+    "translateToHindiLabel": {
+        "message": "Hindi"
+    },
+    "queuedMessage": {
+        "message": "En cola"
+    }
+}

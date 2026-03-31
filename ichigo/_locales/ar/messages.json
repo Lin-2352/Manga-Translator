@@ -1,0 +1,248 @@
+{
+    "extName": {
+        "message": "مترجم المانغا🍓"
+    },
+    "extDescription": {
+        "message": "مترجم مانغا للغات اليابانية والكورية والصينية"
+    },
+    "translationPanelInstructions": {
+        "message": "انقر واسحب لإنشاء لوحة ترجمة.\n ستتم ترجمة جميع الصور الموجودة تحتها تلقائيًا.\n قم بتغطية الصورة بالكامل وليس فقط فقاعات النص!"
+    },
+    "toggleTranslationsContextMenu": {
+        "message": "تبديل الترجمات"
+    },
+    "translateTabToggleLabel": {
+        "message": "تبويب الترجمة"
+    },
+    "emailInputPlaceholder": {
+        "message": "البريد الإلكتروني"
+    },
+    "passwordInputPlaceholder": {
+        "message": "كلمة المرور"
+    },
+    "uploadFilesLabel": {
+        "message": "أو %UPLOAD_FILES%"
+    },
+    "uploadFilesText": {
+        "message": "تحميل ملفات"
+    },
+    "toolsBottomNavButton": {
+        "message": "أدوات"
+    },
+    "logInBottomNavButton": {
+        "message": "تسجيل الدخول"
+    },
+    "settingsBottomNavButton": {
+        "message": "الإعدادات"
+    },
+    "loadingLabel": {
+        "message": "جارٍ التحميل..."
+    },
+    "freeTierLabel": {
+        "message": "المستوى المجاني"
+    },
+    "tier1SupporterLabel": {
+        "message": "داعم من المستوى 1 <3"
+    },
+    "tier2SupporterLabel": {
+        "message": "داعم من المستوى 2 <3"
+    },
+    "unlockUnlimitedTooltip": {
+        "message": "فتح ترجمات غير محدودة"
+    },
+    "logOutButton": {
+        "message": "تسجيل الخروج"
+    },
+    "siteAccessError": {
+        "message": "يرجى تعيين الوصول إلى الموقع على \"في جميع المواقع\"."
+    },
+    "siteAccessErrorSafariMacOS": {
+        "message": "لتسجيل الدخول، يرجى فتح تفضيلات Safari (⌘,) ثم تبويب الامتدادات والسماح لـ Manga Translator بالعمل على جميع المواقع."
+    },
+    "siteAccessErrorSafariIOS": {
+        "message": "لتسجيل الدخول، يرجى فتح الإعدادات > Safari > الامتدادات والسماح لـ Manga Translator بالعمل على جميع المواقع."
+    },
+    "changeSiteAccessButton": {
+        "message": "تغيير الوصول إلى الموقع"
+    },
+    "rateButton": {
+        "message": "تقييم"
+    },
+    "otherToolsLabel": {
+        "message": "أدوات أخرى"
+    },
+    "translationPanelLabel": {
+        "message": "لوحة الترجمة"
+    },
+    "mangaFontStyleLabel": {
+        "message": "نمط خط المانغا"
+    },
+    "mangaFontColorLabel": {
+        "message": "لون خط المانغا"
+    },
+    "translationModel": {
+        "message": "المترجم"
+    },
+    "selectModelLabel": {
+        "message": "اختر المترجم"
+    },
+    "lockedTier1Label": {
+        "message": "(مغلق: المستوى 1)"
+    },
+    "lockedTier2Label": {
+        "message": "(مغلق: المستوى 2)"
+    },
+    "deepseekv3Translator": {
+        "message": "Deepseek v3"
+    },
+    "deepseekv3TranslatorLocked": {
+        "message": "Deepseek v3 (مغلق: المستوى 1)"
+    },
+    "deeplTranslator": {
+        "message": "DeepL"
+    },
+    "deeplTranslatorLocked": {
+        "message": "DeepL (مغلق: المستوى 1)"
+    },
+    "geminiFlash2Translator": {
+        "message": "Gemini Flash 2.0"
+    },
+    "geminiFlash2TranslatorLocked": {
+        "message": "Gemini Flash 2.0 (مغلق: المستوى 1)"
+    },
+    "gpt4oMiniTranslator": {
+        "message": "GPT-4o mini"
+    },
+    "gpt4oTranslator": {
+        "message": "GPT-4o"
+    },
+    "gpt4oTranslatorLocked": {
+        "message": "GPT-4o (مغلق: المستوى 2)"
+    },
+    "fetchErrorMessage": {
+        "message": "قام هذا الموقع بحظر الامتدادات. قم بفك الحظر باستخدام ichigo unlocker."
+    },
+    "siteAccessErrorMessage": {
+        "message": "قم بتعيين `الوصول إلى الموقع` على `في جميع المواقع` وإلا فلن يتمكن الامتداد من الترجمة."
+    },
+    "siteAccessErrorMessageSafari": {
+        "message": "افتح إعدادات Safari واسمح لـ Manga Translator بالعمل على جميع المواقع وإلا فلن يتمكن الامتداد من الترجمة."
+    },
+    "feedServerHamstersMessage": {
+        "message": "أطعم هامسترات الخادم."
+    },
+    "upgradeButton": {
+        "message": "ترقية"
+    },
+    "logInButton": {
+        "message": "تسجيل الدخول"
+    },
+    "logInButtonIOSAlert": {
+        "message": "لتسجيل الدخول، افتح واجهة امتداد Manga Translator على تبويب \"تسجيل الدخول\". تأكد من السماح لـ Manga Translator بالعمل على جميع المواقع في إعدادات Safari."
+    },
+    "downloadButton": {
+        "message": "تنزيل"
+    },
+    "settingsButton": {
+        "message": "الإعدادات"
+    },
+    "registerButton": {
+        "message": "تسجيل"
+    },
+    "deleteAccount": {
+        "message": "حذف الحساب"
+    },
+    "serverConnectFailureMessage": {
+        "message": "تعذر الاتصال بالخادم"
+    },
+    "checkInternetConnectionMessage": {
+        "message": "تحقق من اتصالك بالإنترنت."
+    },
+    "serverDownMessage": {
+        "message": "الخادم متوقف للصيانة المؤقتة أو يواجه مشاكل."
+    },
+    "localFileAccessMessage": {
+        "message": "لترجمة الملفات المحلية، قم بتفعيل `السماح بالدخول إلى عناوين URL للملفات` في الشاشة التالية. ثم قم بتحديث الصفحة."
+    },
+    "emailTakenMessage": {
+        "message": "البريد الإلكتروني مستخدم بالفعل."
+    },
+    "emailNotFoundMessage": {
+        "message": "هذا البريد الإلكتروني غير مسجل."
+    },
+    "incorrectPasswordMessage": {
+        "message": "كلمة المرور غير صحيحة."
+    },
+    "invalidRegistrationMessage": {
+        "message": "يرجى إدخال بريد إلكتروني وكلمة مرور صالحين للتسجيل."
+    },
+    "unknownRegistrationErrorMessage": {
+        "message": "حدث خطأ غير معروف. تحقق من اتصالك بالإنترنت وحاول مرة أخرى بعد قليل."
+    },
+    "authLoadingMessage": {
+        "message": "جارٍ التحميل"
+    },
+    "resetPasswordLink": {
+        "message": "إعادة تعيين كلمة المرور"
+    },
+    "translateToLabel": {
+        "message": "ترجمة إلى"
+    },
+    "translateToJapaneseLabel": {
+        "message": "اليابانية"
+    },
+    "translateToKoreanLabel": {
+        "message": "الكورية"
+    },
+    "translateToPolishLabel": {
+        "message": "البولندية"
+    },
+    "translateToChineseSimplifiedLabel": {
+        "message": "الصينية المبسطة"
+    },
+    "translateToChineseTraditionalLabel": {
+        "message": "الصينية التقليدية"
+    },
+    "translateToEnglishLabel": {
+        "message": "الإنجليزية"
+    },
+    "translateToGermanLabel": {
+        "message": "الألمانية"
+    },
+    "translateToSpanishLabel": {
+        "message": "الإسبانية"
+    },
+    "translateToFrenchLabel": {
+        "message": "الفرنسية"
+    },
+    "translateToItalianLabel": {
+        "message": "الإيطالية"
+    },
+    "translateToPortugueseLabel": {
+        "message": "البرتغالية"
+    },
+    "translateToBrazilianPortugueseLabel": {
+        "message": "البرتغالية البرازيلية"
+    },
+    "translateToRussianLabel": {
+        "message": "الروسية"
+    },
+    "translateToThaiLabel": {
+        "message": "التايلاندية"
+    },
+    "translateToVietnameseLabel": {
+        "message": "الفيتنامية"
+    },
+    "translateToIndonesianLabel": {
+        "message": "الإندونيسية"
+    },
+    "translateToArabicLabel": {
+        "message": "العربية"
+    },
+    "translateToHindiLabel": {
+        "message": "الهندية"
+    },
+    "queuedMessage": {
+        "message": "قيد الانتظار"
+    }
+}

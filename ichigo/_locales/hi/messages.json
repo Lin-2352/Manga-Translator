@@ -1,0 +1,248 @@
+{
+    "extName": {
+        "message": "Manga Translator🍓"
+    },
+    "extDescription": {
+        "message": "जापानी, कोरियाई और चीनी भाषा के लिए मैंगा ट्रांसलेटर"
+    },
+    "translationPanelInstructions": {
+        "message": "ट्रांसलेशन पैनल बनाने के लिए क्लिक करें और खींचें (ड्रैग करें)।\n नीचे की सभी छवियां अपने आप ट्रांसलेट हो जाएंगी।\n पूरी छवि को कवर करें, केवल टेक्स्ट बबल को नहीं!"
+    },
+    "toggleTranslationsContextMenu": {
+        "message": "ट्रांसलेशन चालू/बंद करें"
+    },
+    "translateTabToggleLabel": {
+        "message": "ट्रांसलेट टैब"
+    },
+    "emailInputPlaceholder": {
+        "message": "ईमेल"
+    },
+    "passwordInputPlaceholder": {
+        "message": "पासवर्ड"
+    },
+    "uploadFilesLabel": {
+        "message": "या %UPLOAD_FILES%"
+    },
+    "uploadFilesText": {
+        "message": "फाइलें अपलोड करें"
+    },
+    "toolsBottomNavButton": {
+        "message": "टूल्स"
+    },
+    "logInBottomNavButton": {
+        "message": "लॉग इन"
+    },
+    "settingsBottomNavButton": {
+        "message": "सेटिंग्स"
+    },
+    "loadingLabel": {
+        "message": "लोड हो रहा है…"
+    },
+    "freeTierLabel": {
+        "message": "फ्री टियर"
+    },
+    "tier1SupporterLabel": {
+        "message": "टियर 1 सपोर्टर <3"
+    },
+    "tier2SupporterLabel": {
+        "message": "टियर 2 सपोर्टर <3"
+    },
+    "unlockUnlimitedTooltip": {
+        "message": "अनलिमिटेड ट्रांसलेशन अनलॉक करें"
+    },
+    "logOutButton": {
+        "message": "लॉग आउट"
+    },
+    "siteAccessError": {
+        "message": "कृपया साइट एक्सेस को \"सभी साइटों पर (On all sites)\" पर सेट करें।"
+    },
+    "siteAccessErrorSafariMacOS": {
+        "message": "लॉग इन करने के लिए, कृपया सफारी प्रेफरेंस (⌘,) में एक्सटेंशन टैब खोलें और Manga Translator को सभी साइटों पर अनुमति दें।"
+    },
+    "siteAccessErrorSafariIOS": {
+        "message": "लॉग इन करने के लिए, कृपया सेटिंग्स > सफारी > एक्सटेंशन खोलें और Manga Translator को सभी साइटों पर अनुमति दें।"
+    },
+    "changeSiteAccessButton": {
+        "message": "साइट एक्सेस बदलें"
+    },
+    "rateButton": {
+        "message": "रेट करें"
+    },
+    "otherToolsLabel": {
+        "message": "अन्य टूल्स"
+    },
+    "translationPanelLabel": {
+        "message": "ट्रांसलेशन पैनल"
+    },
+    "mangaFontStyleLabel": {
+        "message": "मैंगा फॉन्ट स्टाइल"
+    },
+    "mangaFontColorLabel": {
+        "message": "मैंगा फॉन्ट का रंग"
+    },
+    "translationModel": {
+        "message": "ट्रांसलेटर"
+    },
+    "selectModelLabel": {
+        "message": "ट्रांसलेटर चुनें"
+    },
+    "lockedTier1Label": {
+        "message": "(लॉक है: टियर 1)"
+    },
+    "lockedTier2Label": {
+        "message": "(लॉक है: टियर 2)"
+    },
+    "deepseekv3Translator": {
+        "message": "Deepseek v3"
+    },
+    "deepseekv3TranslatorLocked": {
+        "message": "Deepseek v3 (लॉक है: टियर 1)"
+    },
+    "deeplTranslator": {
+        "message": "DeepL"
+    },
+    "deeplTranslatorLocked": {
+        "message": "DeepL (लॉक है: टियर 1)"
+    },
+    "geminiFlash2Translator": {
+        "message": "Gemini Flash 2.0"
+    },
+    "geminiFlash2TranslatorLocked": {
+        "message": "Gemini Flash 2.0 (लॉक है: टियर 1)"
+    },
+    "gpt4oMiniTranslator": {
+        "message": "GPT-4o mini"
+    },
+    "gpt4oTranslator": {
+        "message": "GPT-4o"
+    },
+    "gpt4oTranslatorLocked": {
+        "message": "GPT-4o (लॉक है: टियर 2)"
+    },
+    "fetchErrorMessage": {
+        "message": "इस साइट ने एक्सटेंशन को ब्लॉक कर दिया है। इसे ichigo unlocker से अनलॉक करें।"
+    },
+    "siteAccessErrorMessage": {
+        "message": "`Site access` को `On all sites` पर सेट करें वरना एक्सटेंशन ट्रांसलेट नहीं कर पाएगा।"
+    },
+    "siteAccessErrorMessageSafari": {
+        "message": "सफारी सेटिंग्स खोलें और Manga Translator को सभी साइटों पर अनुमति दें वरना एक्सटेंशन ट्रांसलेट नहीं कर पाएगा।"
+    },
+    "feedServerHamstersMessage": {
+        "message": "सर्वर हैम्स्टर्स को खाना खिलाएं।"
+    },
+    "upgradeButton": {
+        "message": "अपग्रेड करें"
+    },
+    "logInButton": {
+        "message": "लॉग इन"
+    },
+    "logInButtonIOSAlert": {
+        "message": "लॉग इन करने के लिए, Manga Translator एक्सटेंशन UI में 'लॉग इन' टैब खोलें। सुनिश्चित करें कि सफारी सेटिंग्स में Manga Translator को सभी साइटों पर अनुमति दी गई है।"
+    },
+    "downloadButton": {
+        "message": "डाउनलोड"
+    },
+    "settingsButton": {
+        "message": "सेटिंग्स"
+    },
+    "registerButton": {
+        "message": "रजिस्टर करें"
+    },
+    "deleteAccount": {
+        "message": "अकाउंट डिलीट करें"
+    },
+    "serverConnectFailureMessage": {
+        "message": "सर्वर से कनेक्ट नहीं हो सका"
+    },
+    "checkInternetConnectionMessage": {
+        "message": "अपना इंटरनेट कनेक्शन चेक करें।"
+    },
+    "serverDownMessage": {
+        "message": "सर्वर अस्थायी रखरखाव के लिए बंद है या समस्याओं का सामना कर रहा है।"
+    },
+    "localFileAccessMessage": {
+        "message": "लोकल फाइलों को ट्रांसलेट करने के लिए, अगली स्क्रीन में `Allow access to file URLs` को चालू करें। फिर पेज को रिफ्रेश करें।"
+    },
+    "emailTakenMessage": {
+        "message": "यह ईमेल पहले से उपयोग में है।"
+    },
+    "emailNotFoundMessage": {
+        "message": "यह ईमेल रजिस्टर्ड नहीं है।"
+    },
+    "incorrectPasswordMessage": {
+        "message": "गलत पासवर्ड।"
+    },
+    "invalidRegistrationMessage": {
+        "message": "रजिस्टर करने के लिए कृपया मान्य ईमेल और पासवर्ड दर्ज करें।"
+    },
+    "unknownRegistrationErrorMessage": {
+        "message": "एक अज्ञात त्रुटि हुई। अपना इंटरनेट कनेक्शन चेक करें और कुछ देर बाद फिर से प्रयास करें।"
+    },
+    "authLoadingMessage": {
+        "message": "लोड हो रहा है"
+    },
+    "resetPasswordLink": {
+        "message": "पासवर्ड रीसेट करें"
+    },
+    "translateToLabel": {
+        "message": "इसमें ट्रांसलेट करें"
+    },
+    "translateToJapaneseLabel": {
+        "message": "जापानी"
+    },
+    "translateToKoreanLabel": {
+        "message": "कोरियाई"
+    },
+    "translateToPolishLabel": {
+        "message": "पोलिश"
+    },
+    "translateToChineseSimplifiedLabel": {
+        "message": "चीनी (सरलीकृत)"
+    },
+    "translateToChineseTraditionalLabel": {
+        "message": "चीनी (पारंपरिक)"
+    },
+    "translateToEnglishLabel": {
+        "message": "अंग्रेज़ी"
+    },
+    "translateToGermanLabel": {
+        "message": "जर्मन"
+    },
+    "translateToSpanishLabel": {
+        "message": "स्पेनिश"
+    },
+    "translateToFrenchLabel": {
+        "message": "फ्रेंच"
+    },
+    "translateToItalianLabel": {
+        "message": "इतालवी"
+    },
+    "translateToPortugueseLabel": {
+        "message": "पुर्तगाली"
+    },
+    "translateToBrazilianPortugueseLabel": {
+        "message": "ब्राजीली पुर्तगाली"
+    },
+    "translateToRussianLabel": {
+        "message": "रूसी"
+    },
+    "translateToThaiLabel": {
+        "message": "थाई"
+    },
+    "translateToVietnameseLabel": {
+        "message": "वियतनामी"
+    },
+    "translateToIndonesianLabel": {
+        "message": "इंडोनेशियाई"
+    },
+    "translateToArabicLabel": {
+        "message": "अरबी"
+    },
+    "translateToHindiLabel": {
+        "message": "हिंदी"
+    },
+    "queuedMessage": {
+        "message": "कतार में"
+    }
+}

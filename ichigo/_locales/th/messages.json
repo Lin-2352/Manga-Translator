@@ -1,0 +1,248 @@
+{
+    "extName": {
+        "message": "Manga Translator🍓"
+    },
+    "extDescription": {
+        "message": "เครื่องมือแปลมังงะสำหรับภาษาญี่ปุ่น เกาหลี และจีน"
+    },
+    "translationPanelInstructions": {
+        "message": "คลิกและลากเพื่อสร้างกรอบการแปล\n รูปภาพทั้งหมดที่อยู่ภายใต้กรอบจะถูกแปลโดยอัตโนมัติ\n โปรดคลุมให้ทั่วทั้งรูปภาพ ไม่ใช่แค่ฟองข้อความ!"
+    },
+    "toggleTranslationsContextMenu": {
+        "message": "เปิด/ปิดการแปล"
+    },
+    "translateTabToggleLabel": {
+        "message": "แท็บแปลภาษา"
+    },
+    "emailInputPlaceholder": {
+        "message": "อีเมล"
+    },
+    "passwordInputPlaceholder": {
+        "message": "รหัสผ่าน"
+    },
+    "uploadFilesLabel": {
+        "message": "หรือ %UPLOAD_FILES%"
+    },
+    "uploadFilesText": {
+        "message": "อัปโหลดไฟล์"
+    },
+    "toolsBottomNavButton": {
+        "message": "เครื่องมือ"
+    },
+    "logInBottomNavButton": {
+        "message": "เข้าสู่ระบบ"
+    },
+    "settingsBottomNavButton": {
+        "message": "การตั้งค่า"
+    },
+    "loadingLabel": {
+        "message": "กำลังโหลด…"
+    },
+    "freeTierLabel": {
+        "message": "ระดับฟรี"
+    },
+    "tier1SupporterLabel": {
+        "message": "ผู้สนับสนุนระดับ 1 <3"
+    },
+    "tier2SupporterLabel": {
+        "message": "ผู้สนับสนุนระดับ 2 <3"
+    },
+    "unlockUnlimitedTooltip": {
+        "message": "ปลดล็อกการแปลแบบไม่จำกัด"
+    },
+    "logOutButton": {
+        "message": "ออกจากระบบ"
+    },
+    "siteAccessError": {
+        "message": "โปรดตั้งค่าการเข้าถึงเว็บไซต์เป็น \"ในทุกไซต์\""
+    },
+    "siteAccessErrorSafariMacOS": {
+        "message": "เพื่อเข้าสู่ระบบ โปรดเปิดการตั้งค่า Safari (⌘,) ไปที่แท็บส่วนขยาย และอนุญาต Manga Translator ในทุกไซต์"
+    },
+    "siteAccessErrorSafariIOS": {
+        "message": "เพื่อเข้าสู่ระบบ โปรดเปิด การตั้งค่า > Safari > ส่วนขยาย และอนุญาต Manga Translator ในทุกไซต์"
+    },
+    "changeSiteAccessButton": {
+        "message": "เปลี่ยนการเข้าถึงเว็บไซต์"
+    },
+    "rateButton": {
+        "message": "ให้คะแนน"
+    },
+    "otherToolsLabel": {
+        "message": "เครื่องมืออื่นๆ"
+    },
+    "translationPanelLabel": {
+        "message": "กรอบการแปล"
+    },
+    "mangaFontStyleLabel": {
+        "message": "รูปแบบฟอนต์มังงะ"
+    },
+    "mangaFontColorLabel": {
+        "message": "สีฟอนต์มังงะ"
+    },
+    "translationModel": {
+        "message": "ตัวแปลภาษา"
+    },
+    "selectModelLabel": {
+        "message": "เลือกตัวแปลภาษา"
+    },
+    "lockedTier1Label": {
+        "message": "(ล็อค: ระดับ 1)"
+    },
+    "lockedTier2Label": {
+        "message": "(ล็อค: ระดับ 2)"
+    },
+    "deepseekv3Translator": {
+        "message": "Deepseek v3"
+    },
+    "deepseekv3TranslatorLocked": {
+        "message": "Deepseek v3 (ล็อค: ระดับ 1)"
+    },
+    "deeplTranslator": {
+        "message": "DeepL"
+    },
+    "deeplTranslatorLocked": {
+        "message": "DeepL (ล็อค: ระดับ 1)"
+    },
+    "geminiFlash2Translator": {
+        "message": "Gemini Flash 2.0"
+    },
+    "geminiFlash2TranslatorLocked": {
+        "message": "Gemini Flash 2.0 (ล็อค: ระดับ 1)"
+    },
+    "gpt4oMiniTranslator": {
+        "message": "GPT-4o mini"
+    },
+    "gpt4oTranslator": {
+        "message": "GPT-4o"
+    },
+    "gpt4oTranslatorLocked": {
+        "message": "GPT-4o (ล็อค: ระดับ 2)"
+    },
+    "fetchErrorMessage": {
+        "message": "เว็บไซต์นี้บล็อกส่วนขยาย ปลดล็อกด้วย ichigo unlocker"
+    },
+    "siteAccessErrorMessage": {
+        "message": "ตั้งค่า `การเข้าถึงเว็บไซต์` เป็น `ในทุกไซต์` มิฉะนั้นส่วนขยายจะไม่สามารถแปลได้"
+    },
+    "siteAccessErrorMessageSafari": {
+        "message": "เปิดการตั้งค่า Safari และอนุญาต Manga Translator ในทุกไซต์ มิฉะนั้นส่วนขยายจะไม่สามารถแปลได้"
+    },
+    "feedServerHamstersMessage": {
+        "message": "ให้อาหารแฮมสเตอร์เซิร์ฟเวอร์"
+    },
+    "upgradeButton": {
+        "message": "อัปเกรด"
+    },
+    "logInButton": {
+        "message": "เข้าสู่ระบบ"
+    },
+    "logInButtonIOSAlert": {
+        "message": "เพื่อเข้าสู่ระบบ ให้เปิดหน้าต่างส่วนขยาย Manga Translator ไปที่แท็บ 'เข้าสู่ระบบ' ตรวจสอบให้แน่ใจว่าอนุญาต Manga Translator ในทุกไซต์ในการตั้งค่า Safari"
+    },
+    "downloadButton": {
+        "message": "ดาวน์โหลด"
+    },
+    "settingsButton": {
+        "message": "การตั้งค่า"
+    },
+    "registerButton": {
+        "message": "ลงทะเบียน"
+    },
+    "deleteAccount": {
+        "message": "ลบบัญชี"
+    },
+    "serverConnectFailureMessage": {
+        "message": "ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ได้"
+    },
+    "checkInternetConnectionMessage": {
+        "message": "ตรวจสอบการเชื่อมต่ออินเทอร์เน็ตของคุณ"
+    },
+    "serverDownMessage": {
+        "message": "เซิร์ฟเวอร์ปิดปรับปรุงชั่วคราวหรือกำลังประสบปัญหา"
+    },
+    "localFileAccessMessage": {
+        "message": "เพื่อแปลไฟล์ในเครื่อง ให้เปิด `อนุญาตการเข้าถึง URL ของไฟล์` ในหน้าถัดไป แล้วรีเฟรชหน้าเว็บ"
+    },
+    "emailTakenMessage": {
+        "message": "อีเมลนี้ถูกใช้ไปแล้ว"
+    },
+    "emailNotFoundMessage": {
+        "message": "อีเมลนี้ยังไม่ได้ลงทะเบียน"
+    },
+    "incorrectPasswordMessage": {
+        "message": "รหัสผ่านไม่ถูกต้อง"
+    },
+    "invalidRegistrationMessage": {
+        "message": "โปรดป้อนอีเมลและรหัสผ่านที่ถูกต้องเพื่อลงทะเบียน"
+    },
+    "unknownRegistrationErrorMessage": {
+        "message": "เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุ ตรวจสอบการเชื่อมต่ออินเทอร์เน็ตของคุณและลองใหม่อีกครั้งในไม่ช้า"
+    },
+    "authLoadingMessage": {
+        "message": "กำลังโหลด"
+    },
+    "resetPasswordLink": {
+        "message": "รีเซ็ตรหัสผ่าน"
+    },
+    "translateToLabel": {
+        "message": "แปลเป็น"
+    },
+    "translateToJapaneseLabel": {
+        "message": "ภาษาญี่ปุ่น"
+    },
+    "translateToKoreanLabel": {
+        "message": "ภาษาเกาหลี"
+    },
+    "translateToPolishLabel": {
+        "message": "ภาษาโปแลนด์"
+    },
+    "translateToChineseSimplifiedLabel": {
+        "message": "ภาษาจีนตัวย่อ"
+    },
+    "translateToChineseTraditionalLabel": {
+        "message": "ภาษาจีนตัวเต็ม"
+    },
+    "translateToEnglishLabel": {
+        "message": "ภาษาอังกฤษ"
+    },
+    "translateToGermanLabel": {
+        "message": "ภาษาเยอรมัน"
+    },
+    "translateToSpanishLabel": {
+        "message": "ภาษาสเปน"
+    },
+    "translateToFrenchLabel": {
+        "message": "ภาษาฝรั่งเศส"
+    },
+    "translateToItalianLabel": {
+        "message": "ภาษาอิตาลี"
+    },
+    "translateToPortugueseLabel": {
+        "message": "ภาษาโปรตุเกส"
+    },
+    "translateToBrazilianPortugueseLabel": {
+        "message": "ภาษาโปรตุเกส (บราซิล)"
+    },
+    "translateToRussianLabel": {
+        "message": "ภาษารัสเซีย"
+    },
+    "translateToThaiLabel": {
+        "message": "ภาษาไทย"
+    },
+    "translateToVietnameseLabel": {
+        "message": "ภาษาเวียดนาม"
+    },
+    "translateToIndonesianLabel": {
+        "message": "ภาษาอินโดนีเซีย"
+    },
+    "translateToArabicLabel": {
+        "message": "ภาษาอาหรับ"
+    },
+    "translateToHindiLabel": {
+        "message": "ภาษาฮินดี"
+    },
+    "queuedMessage": {
+        "message": "อยู่ในคิว"
+    }
+}
