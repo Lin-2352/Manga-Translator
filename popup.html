@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Free Manga Translator</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <img src="icons/48x48.png" alt="icon" class="logo">
+      <h1>Manga Translator</h1>
+      <span class="badge">FREE</span>
+    </header>
+
+    <!-- API Keys Section -->
+    <section class="section" id="apiKeySection">
+      <div class="section-header">
+        <span class="section-icon">🔑</span>
+        <span>API Keys</span>
+        <span class="status-dot" id="apiStatus"></span>
+      </div>
+
+      <!-- Gemini Keys -->
+      <div class="key-group">
+        <label class="key-label">Gemini API Keys <span class="key-count" id="geminiKeyCount">(0)</span></label>
+        <div class="api-key-row">
+          <input type="password" id="geminiKeyInput" placeholder="Paste a Gemini API key" autocomplete="off">
+          <button id="addGeminiKeyBtn" class="btn btn-primary">Add</button>
+        </div>
+        <div id="geminiKeysList" class="keys-list"></div>
+        <a href="https://aistudio.google.com/apikey" target="_blank" class="help-link">
+          Get free API keys from Google AI Studio →
+        </a>
+      </div>
+
+      <!-- OpenRouter Key -->
+      <div class="key-group">
+        <label class="key-label">OpenRouter Key <span class="key-hint">(fallback)</span></label>
+        <div class="api-key-row">
+          <input type="password" id="openrouterKeyInput" placeholder="Paste OpenRouter API key" autocomplete="off">
+          <button id="saveOpenrouterBtn" class="btn btn-primary">Save</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Translation Toggle -->
+    <section class="section">
+      <div class="toggle-row">
+        <div>
+          <span class="section-icon">🌐</span>
+          <span>Auto-translate images</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" id="translationToggle">
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </section>
+
+    <!-- Quick Actions -->
+    <section class="section">
+      <div class="section-header">
+        <span class="section-icon">⚡</span>
+        <span>Actions</span>
+      </div>
+      <div class="actions-grid">
+        <button id="translatePageBtn" class="btn btn-action">
+          Translate Page
+        </button>
+        <button id="translationPanelBtn" class="btn btn-action">
+          Selection Panel
+        </button>
+        <button id="clearBtn" class="btn btn-action btn-secondary">
+          Clear All
+        </button>
+        <button id="retranslateBtn" class="btn btn-action btn-secondary">
+          Re-translate
+        </button>
+      </div>
+    </section>
+
+    <!-- Settings -->
+    <section class="section">
+      <div class="section-header">
+        <span class="section-icon">⚙️</span>
+        <span>Settings</span>
+      </div>
+
+      <div class="setting-row">
+        <label for="fontSelect">Font Style</label>
+        <select id="fontSelect">
+          <option value="CC Wild Words">CC Wild Words</option>
+          <option value="Bangers">Bangers</option>
+          <option value="Patrick Hand">Patrick Hand</option>
+          <option value="Comic Sans MS">Comic Sans MS</option>
+          <option value="Arial">Arial (System)</option>
+        </select>
+      </div>
+
+      <div class="setting-row">
+        <label for="fontColorInput">Font Color</label>
+        <input type="color" id="fontColorInput" value="#000000">
+      </div>
+    </section>
+
+    <!-- Status -->
+    <footer class="footer">
+      <div id="statusText">Ready</div>
+      <div id="statsText" class="stats"></div>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
+
