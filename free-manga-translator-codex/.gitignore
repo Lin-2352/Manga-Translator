@@ -1,0 +1,6 @@
+# Local secrets
+.env
+
+# Extension/editor noise
+.DS_Store
+Thumbs.db

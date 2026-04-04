@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -oP \"\\(const|let|var\\) [a-zA-Z_$][a-zA-Z0-9_$]*=new \\(Set|Map|WeakMap\\)\")",
+      "Bash(node -c content.js)",
+      "Bash(node -c background.js)",
+      "Bash(node -c translationPanel.js)",
+      "Bash(node -c popup.js)"
+    ]
+  }
+}
