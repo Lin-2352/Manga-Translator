@@ -1,0 +1,8 @@
+{
+  "geminiApiKeys": [],
+  "githubApiKey": "",
+  "groqApiKey": "",
+  "mistralApiKey": "",
+  "openrouterApiKey": "",
+  "preferredProvider": "gemini"
+}

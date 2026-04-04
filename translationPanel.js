@@ -58,10 +58,11 @@
       .fmt-textbox {
         all: initial;
         position: absolute;
-        display: grid;
-        place-items: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border-radius: 8px;
-        background-color: rgba(255, 255, 255, 0.95);
+        background-color: #FFFFFF;
         pointer-events: auto;
         z-index: 2147483647;
         text-align: center;
@@ -222,7 +223,7 @@
       }
 
       if (response?.translations && response.translations.length > 0) {
-        showTranslationPanel(response.translations, left, top, w, h, response.zoomFactor || 1);
+        showTranslationPanel(response.translations, left, top, w, h, response.zoomFactor || 1, window.devicePixelRatio || 1);
       } else {
         showError('No translatable text found in selection', left, top, w, h);
       }
@@ -238,9 +239,13 @@
     return (Math.round(m) / 100) * Math.sign(num);
   }
 
-  // ===== Show Translation Panel (Ichigo pattern: percentage-based text positioning) =====
-  function showTranslationPanel(translations, panelX, panelY, panelW, panelH, zoomFactor) {
-    const zoomConstant = 1 / zoomFactor;
+  // ===== Show Translation Panel (percentage-based text positioning, DPR-aware) =====
+  function showTranslationPanel(translations, panelX, panelY, panelW, panelH, zoomFactor, dpr) {
+    // The captured image dimensions are (panelW * zoomFactor * dpr) x (panelH * zoomFactor * dpr).
+    // API coordinates are in that pixel space. To map back to panel percentages:
+    const scale = zoomFactor * dpr;
+    const imgW = panelW * scale;
+    const imgH = panelH * scale;
 
     const panel = document.createElement('div');
     panel.className = 'fmt-panel';
@@ -265,33 +270,33 @@
       const color = result.mangaFontColor || '#000000';
 
       for (const t of translations) {
-        // Convert to percentage positions (Ichigo pattern)
-        const boxW = ((t.maxX - t.minX) / panelW) * 100;
-        const boxH = ((t.maxY - t.minY) / panelH) * 100;
-        const boxLeft = (t.minX / panelW) * 100;
-        const boxTop = (t.minY / panelH) * 100;
+        // Convert API pixel coords to panel-relative percentages
+        const boxLeftPct = (t.minX / imgW) * 100;
+        const boxTopPct = (t.minY / imgH) * 100;
+        const boxWPct = ((t.maxX - t.minX) / imgW) * 100;
+        const boxHPct = ((t.maxY - t.minY) / imgH) * 100;
 
         const textBox = document.createElement('div');
         textBox.className = 'fmt-textbox';
-        textBox.style.left = precisionRound(zoomConstant * boxLeft) + '%';
-        textBox.style.top = precisionRound(zoomConstant * boxTop) + '%';
-        textBox.style.width = precisionRound(zoomConstant * boxW) + '%';
-        textBox.style.height = precisionRound(zoomConstant * boxH) + '%';
+        textBox.style.left = precisionRound(boxLeftPct) + '%';
+        textBox.style.top = precisionRound(boxTopPct) + '%';
+        textBox.style.width = precisionRound(boxWPct) + '%';
+        textBox.style.height = precisionRound(boxHPct) + '%';
         textBox.style.fontFamily = `"${font}", "Comic Sans MS", cursive`;
         textBox.style.color = color;
-        textBox.style.fontSize = Math.max(10, Math.min(t.fontSize || 14, 24)) + 'px';
+        textBox.style.fontSize = '16px';
         textBox.style.textShadow = '0 0 2px white, 0 0 2px white, 0 0 2px white';
         textBox.textContent = t.translatedText;
 
         panel.appendChild(textBox);
 
-        // DOM-based fitText (Ichigo pattern: shrink font until no overflow)
+        // DOM-based fitText: shrink font until no overflow
         requestAnimationFrame(() => {
           let size = parseInt(textBox.style.fontSize);
           let attempts = 0;
           while (
             (textBox.scrollWidth > textBox.clientWidth || textBox.scrollHeight > textBox.clientHeight) &&
-            size > 8 && attempts < 50
+            size > 6 && attempts < 50
           ) {
             size--;
             textBox.style.fontSize = size + 'px';
@@ -318,9 +323,24 @@
 
     const errorText = document.createElement('div');
     errorText.style.cssText = 'color:#f44336;font-size:13px;text-align:center;max-width:90%;';
-    errorText.textContent = message === 'NO_API_KEY'
-      ? 'Please set your API key in the extension popup first'
-      : message;
+
+    // User-friendly error messages
+    const friendlyMessages = {
+      'NO_API_KEY': 'Please set your API key in the extension popup first',
+      'INVALID_API_KEY': 'API key is invalid or expired. Please check your keys in the extension popup.',
+      'RATE_LIMITED': 'Rate limited. Please wait a moment and try again.',
+      'ALL_KEYS_FAILED': 'All API keys failed. Please check your keys are valid.',
+      'FullQueue': 'Translation queue is full. Please wait and try again.',
+      'CAPTURE_FAILED': 'Failed to capture the page. Please try again.',
+    };
+    // Match known error prefixes or show truncated message
+    let displayMsg = friendlyMessages[message];
+    if (!displayMsg) {
+      for (const [key, msg] of Object.entries(friendlyMessages)) {
+        if (message && message.startsWith(key)) { displayMsg = msg; break; }
+      }
+    }
+    errorText.textContent = displayMsg || (message && message.length > 150 ? message.substring(0, 150) + '...' : message);
 
     const closeBtn = document.createElement('button');
     closeBtn.textContent = 'Close';

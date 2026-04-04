@@ -34,7 +34,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["fonts/*", "icons/*"],
+      "resources": ["fonts/*", "icons/*", "config.json", ".env"],
       "matches": ["<all_urls>"]
     }
   ]

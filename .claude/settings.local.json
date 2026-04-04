@@ -1,0 +1,34 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -oP \"\\(const|let|var\\) [a-zA-Z_$][a-zA-Z0-9_$]*=new \\(Set|Map|WeakMap\\)\")",
+      "Bash(node -c content.js)",
+      "Bash(node -c background.js)",
+      "Bash(node -c translationPanel.js)",
+      "Bash(node -c popup.js)",
+      "WebFetch(domain:openrouter.ai)",
+      "Bash(.venv/Scripts/python.exe -c \"import cv2; import numpy as np; print\\('OpenCV:', cv2.__version__\\); print\\('NumPy:', np.__version__\\)\")",
+      "Bash(.venv/Scripts/python.exe debug_claude_test.py)",
+      "Bash(.venv/Scripts/python.exe -c ':*)",
+      "Bash(python debug_diagnose_sample2.py)",
+      "Bash(python debug_claude_test.py)",
+      "Bash(python debug_diagnose_sample4.py)",
+      "Bash(python -c \"import json,sys; d=json.load\\(sys.stdin\\); [print\\(k, d[k].get\\('status','?'\\), d[k].get\\('precision','?'\\), d[k].get\\('recall','?'\\)\\) for k in d]\")",
+      "Bash(python -c \" import json, sys d = json.load\\(sys.stdin\\) samples = d.get\\('samples', {}\\) for k, v in samples.items\\(\\): print\\(f'{k}: status={v.get\\(\\\\\"status\\\\\"\\)}, precision={v.get\\(\\\\\"precision\\\\\",\\\\\"?\\\\\"\\)}, recall={v.get\\(\\\\\"recall\\\\\",\\\\\"?\\\\\"\\)}, f1={v.get\\(\\\\\"f1\\\\\",\\\\\"?\\\\\"\\)}'\\) print\\(\\) print\\('overall:', d.get\\('overall', {}\\)\\) \")",
+      "Bash(python -c \" import json with open\\(r'C:\\\\Users\\\\Harsh Raj\\\\Desktop\\\\translator\\\\free-manga-translator\\\\free-manga-translator-codex\\\\samples\\\\sample_retest_summary_final.json'\\) as f: d = json.load\\(f\\) print\\(json.dumps\\(d, indent=2\\)[:3000]\\) \")",
+      "Bash(python:*)",
+      "Bash(.venv/Scripts/python debug_retest_all_samples.py --samples-root samples --summary-json samples/sample_retest_summary_final.json)",
+      "Bash(.venv/Scripts/python -c ':*)",
+      "Bash(\"C:/Users/Harsh Raj/Desktop/translator/free-manga-translator/free-manga-translator-codex/.venv/Scripts/python.exe\" -c \"import cv2, numpy; print\\('cv2:', cv2.__version__, 'numpy:', numpy.__version__\\)\")",
+      "Bash(\"C:/Users/Harsh Raj/Desktop/translator/free-manga-translator/free-manga-translator-codex/.venv/Scripts/python.exe\" debug_claude_run.py --samples-root samples --run-tag claude)",
+      "Bash('C:/Users/Harsh Raj/Desktop/translator/free-manga-translator/free-manga-translator-codex/.venv/Scripts/python.exe' -c ':*)",
+      "Bash(\"C:/Users/Harsh Raj/Desktop/translator/free-manga-translator/free-manga-translator-codex/.venv/Scripts/python.exe\" debug_retest_all_samples.py --samples-root samples --summary-json samples/sample_retest_summary_final.json)",
+      "Bash(rm:*)",
+      "Bash(rm -rv __pycache__)",
+      "Bash(find samples/ -name \"*.json\" -type f -delete -print)",
+      "Bash(rm -v samples/claude_run_summary_claude.json)",
+      "Bash(rm -v samples/sample_retest_summary_final.json)",
+      "Bash(find samples/ -name \"*debug*\" -type f -delete -print)"
+    ]
+  }
+}

@@ -1,6 +1,5 @@
 // Free Manga Translator - Content Script
 // Detects manga images on pages and overlays translations
-// Uses techniques from Ichigo Manga Translator: MutationObserver + ResizeObserver + polling
 
 (function () {
   'use strict';
@@ -15,19 +14,23 @@
   const PROCESSING_ATTR = 'data-fmt-processing';
   const ORIGINAL_SRC_ATTR = 'data-fmt-original-src';
   const ORIGINAL_SRCSET_ATTR = 'data-fmt-original-srcset';
-  const RETRY_DELAY = 1500;
-  const POLL_INTERVAL = 2000;
+  const MAX_RETRIES = 3;
+  const BASE_RETRY_DELAY = 3000;
 
   // ===== State =====
   let isEnabled = false;
   let fontFamily = 'CC Wild Words';
   let fontColor = '#000000';
-  const finishedImageHashes = new Set();
-  const processingImages = new Set(); // Track elements being processed
 
-  // ===== Load Settings =====
+  const translatedSrcs = new Set();
+  const pendingSrcs = new Set();
+  const retryCountMap = new Map();
+  const observedImages = new WeakSet();
+  const spinnerMap = new WeakMap();
+
+  // ===== Load Settings (auto-translate OFF by default) =====
   chrome.storage.local.get(['translationEnabled', 'mangaFontStyle', 'mangaFontColor'], (result) => {
-    isEnabled = result.translationEnabled !== false;
+    isEnabled = result.translationEnabled === true; // OFF by default
     fontFamily = result.mangaFontStyle || 'CC Wild Words';
     fontColor = result.mangaFontColor || '#000000';
     if (isEnabled) scheduleInitialScan();
@@ -67,12 +70,89 @@
     (document.head || document.documentElement).appendChild(style);
   }
 
-  // ===== Image Size Check (Ichigo's aspect-ratio-preserving resize) =====
+  // ===== Spinner Styles & Helpers (prominent dark badge with white spinner) =====
+  function injectSpinnerStyles() {
+    if (document.getElementById('fmt-spinner-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'fmt-spinner-styles';
+    style.textContent = `
+      @keyframes fmt-img-spin {
+        to { transform: rotate(360deg); }
+      }
+      .fmt-img-spinner {
+        position: fixed;
+        width: 40px;
+        height: 40px;
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 50%;
+        z-index: 2147483640;
+        pointer-events: none;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      }
+      .fmt-img-spinner::after {
+        content: '';
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        width: 24px;
+        height: 24px;
+        border: 3px solid rgba(255,255,255,0.3);
+        border-top-color: #ffffff;
+        border-radius: 50%;
+        animation: fmt-img-spin 0.8s linear infinite;
+        box-sizing: border-box;
+      }
+    `;
+    (document.head || document.documentElement).appendChild(style);
+  }
+
+  function showSpinner(img) {
+    if (spinnerMap.has(img)) return;
+    injectSpinnerStyles();
+    const rect = img.getBoundingClientRect();
+    if (rect.width < 10 || rect.height < 10) return; // not visible
+    const spinner = document.createElement('div');
+    spinner.className = 'fmt-img-spinner';
+    spinner.style.left = (rect.left + 8) + 'px';
+    spinner.style.top = (rect.top + 8) + 'px';
+    document.body.appendChild(spinner);
+    spinnerMap.set(img, spinner);
+    console.log('[MangaTranslator] Spinner shown for image');
+  }
+
+  function hideSpinner(img) {
+    const spinner = spinnerMap.get(img);
+    if (spinner) {
+      spinner.remove();
+      spinnerMap.delete(img);
+    }
+  }
+
+  // ===== Image Size Calculation =====
   function calculateResizedDimensions(width, height) {
-    const withinBounds = width <= MAX_DIMENSION || height <= MAX_DIMENSION;
-    if (withinBounds) return { width, height };
-    const ratio = Math.max(MAX_DIMENSION / height, MAX_DIMENSION / width);
+    if (width <= MAX_DIMENSION && height <= MAX_DIMENSION) return { width, height };
+    const ratio = Math.min(MAX_DIMENSION / width, MAX_DIMENSION / height);
     return { width: Math.round(width * ratio), height: Math.round(height * ratio) };
+  }
+
+  // ===== Get effective image src (handles lazy-load patterns) =====
+  function getEffectiveSrc(img) {
+    if (img.currentSrc && img.currentSrc !== '') return img.currentSrc;
+    if (img.src && img.src !== '' && !img.src.endsWith('/')) return img.src;
+    for (const attr of ['data-src', 'data-lazy-src', 'data-original', 'data-lazy', 'data-url']) {
+      const val = img.getAttribute(attr);
+      if (val && val.startsWith('http')) return val;
+    }
+    return img.src || '';
+  }
+
+  // ===== Detect standalone image page =====
+  function isStandaloneImagePage() {
+    const ct = document.contentType || '';
+    if (ct.startsWith('image/')) return true;
+    if (document.body && document.body.children.length === 1 &&
+        document.body.children[0].nodeName === 'IMG') return true;
+    return false;
   }
 
   // ===== Get Image as Base64 =====
@@ -103,7 +183,7 @@
     });
   }
 
-  // ===== Fetch Image Cross-Origin (CORS fallback) =====
+  // ===== Fetch Image Cross-Origin =====
   async function fetchImageCrossOrigin(url) {
     try {
       const response = await fetch(url, { mode: 'cors' });
@@ -120,63 +200,81 @@
     }
   }
 
-  // ===== Word Wrap =====
+  // ===== Word Wrap (handles long words via character breaking) =====
   function wrapText(ctx, text, maxWidth) {
+    if (maxWidth <= 0) return [text];
     const words = text.split(' ');
     const lines = [];
     let currentLine = '';
+
     for (const word of words) {
       const testLine = currentLine ? currentLine + ' ' + word : word;
-      if (ctx.measureText(testLine).width > maxWidth && currentLine) {
-        lines.push(currentLine);
-        currentLine = word;
-      } else {
+      if (ctx.measureText(testLine).width <= maxWidth) {
         currentLine = testLine;
+      } else if (currentLine) {
+        lines.push(currentLine);
+        if (ctx.measureText(word).width > maxWidth) {
+          let partial = '';
+          for (const ch of word) {
+            if (ctx.measureText(partial + ch).width > maxWidth && partial) {
+              lines.push(partial);
+              partial = ch;
+            } else {
+              partial += ch;
+            }
+          }
+          currentLine = partial;
+        } else {
+          currentLine = word;
+        }
+      } else {
+        let partial = '';
+        for (const ch of word) {
+          if (ctx.measureText(partial + ch).width > maxWidth && partial) {
+            lines.push(partial);
+            partial = ch;
+          } else {
+            partial += ch;
+          }
+        }
+        currentLine = partial;
       }
     }
     if (currentLine) lines.push(currentLine);
-    return lines;
+    return lines.length > 0 ? lines : [''];
   }
 
-  // ===== Fit Text to Box =====
+  // ===== Fit Text to Box (strict: guarantees text fits within box) =====
   function fitText(ctx, text, boxWidth, boxHeight, fontFam) {
-    const padding = 6;
-    const availWidth = boxWidth - padding * 2;
-    const availHeight = boxHeight - padding * 2;
-    let fontSize = Math.min(Math.max(Math.floor(boxHeight * 0.4), 10), 40);
+    const PADDING = 4;
+    const availW = boxWidth - PADDING * 2;
+    const availH = boxHeight - PADDING * 2;
 
-    for (; fontSize >= 8; fontSize--) {
-      ctx.font = `bold ${fontSize}px "${fontFam}", "Comic Sans MS", cursive`;
-      const lineHeight = fontSize * 1.3;
-      const lines = wrapText(ctx, text, availWidth);
-      const totalHeight = lines.length * lineHeight;
-      if (totalHeight <= availHeight) {
-        const allFit = lines.every(line => ctx.measureText(line).width <= availWidth);
-        if (allFit) return { fontSize, lines, lineHeight, padding };
+    if (availW < 5 || availH < 5) {
+      return { fontSize: 6, lines: [''], lineHeight: 7, padding: PADDING };
+    }
+
+    const maxSize = Math.min(Math.floor(availH * 0.5), Math.floor(availW * 0.5), 48);
+
+    for (let sz = Math.max(maxSize, 6); sz >= 6; sz--) {
+      ctx.font = `bold ${sz}px "${fontFam}", "Comic Sans MS", cursive`;
+      const lh = Math.ceil(sz * 1.2);
+      const wrapped = wrapText(ctx, text, availW);
+      const totalH = wrapped.length * lh;
+
+      if (totalH <= availH) {
+        const allFit = wrapped.every(line => ctx.measureText(line).width <= availW);
+        if (allFit) {
+          return { fontSize: sz, lines: wrapped, lineHeight: lh, padding: PADDING };
+        }
       }
     }
-    ctx.font = `bold 8px "${fontFam}", "Comic Sans MS", cursive`;
-    return { fontSize: 8, lines: wrapText(ctx, text, availWidth), lineHeight: 10, padding };
+
+    ctx.font = `bold 6px "${fontFam}", "Comic Sans MS", cursive`;
+    return { fontSize: 6, lines: wrapText(ctx, text, availW), lineHeight: 7, padding: PADDING };
   }
 
-  // ===== Draw Rounded Rectangle =====
-  function drawRoundedRect(ctx, x, y, w, h, radius, fillColor) {
-    ctx.beginPath();
-    ctx.moveTo(x + radius, y);
-    ctx.lineTo(x + w - radius, y);
-    ctx.quadraticCurveTo(x + w, y, x + w, y + radius);
-    ctx.lineTo(x + w, y + h - radius);
-    ctx.quadraticCurveTo(x + w, y + h, x + w - radius, y + h);
-    ctx.lineTo(x + radius, y + h);
-    ctx.quadraticCurveTo(x, y + h, x, y + h - radius);
-    ctx.lineTo(x, y + radius);
-    ctx.quadraticCurveTo(x, y, x + radius, y);
-    ctx.closePath();
-    ctx.fillStyle = fillColor;
-    ctx.fill();
-  }
-
-  // ===== Overlay Translations onto Image =====
+  // ===== Overlay Translations onto Image (strict masking + clipped text) =====
   function overlayTranslations(img, translations, imageData) {
     if (!translations || translations.length === 0) return;
 
@@ -187,56 +285,60 @@
     canvas.height = origH;
     const ctx = canvas.getContext('2d');
 
-    // Draw original image
     ctx.drawImage(img, 0, 0, origW, origH);
 
-    // Scale coordinates from API (resized) back to original dimensions
     const scaleX = origW / imageData.width;
     const scaleY = origH / imageData.height;
 
     for (const t of translations) {
-      // Ichigo adds padding to box dimensions for better coverage
-      const pad = 4;
-      const minX = Math.max(0, Math.round(t.minX * scaleX) - pad);
-      const minY = Math.max(0, Math.round(t.minY * scaleY) - pad);
-      const maxX = Math.min(origW, Math.round(t.maxX * scaleX) + pad);
-      const maxY = Math.min(origH, Math.round(t.maxY * scaleY) + pad);
+      // Bubble detection already provides expanded bubble-interior coords;
+      // only add a tiny margin to cover text edges without leaking past the border
+      const EXPAND = 2;
+      const minX = Math.max(0, Math.round(t.minX * scaleX) - EXPAND);
+      const minY = Math.max(0, Math.round(t.minY * scaleY) - EXPAND);
+      const maxX = Math.min(origW, Math.round(t.maxX * scaleX) + EXPAND);
+      const maxY = Math.min(origH, Math.round(t.maxY * scaleY) + EXPAND);
       const boxW = maxX - minX;
       const boxH = maxY - minY;
 
-      if (boxW < 10 || boxH < 10) continue;
+      if (boxW < 8 || boxH < 8) continue;
 
-      // White background with rounded corners (same as Ichigo)
-      drawRoundedRect(ctx, minX, minY, boxW, boxH, 8, 'rgba(255, 255, 255, 0.95)');
+      // STEP 1: MASK — solid white rectangle
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(minX, minY, boxW, boxH);
 
-      // Fit and draw text
-      const { fontSize, lines, lineHeight, padding } = fitText(ctx, t.translatedText, boxW, boxH, fontFamily);
+      // STEP 2: CLIP
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(minX, minY, boxW, boxH);
+      ctx.clip();
 
-      ctx.font = `bold ${fontSize}px "${fontFamily}", "Comic Sans MS", cursive`;
+      // STEP 3: TEXT
+      const fit = fitText(ctx, t.translatedText, boxW, boxH, fontFamily);
+      ctx.font = `bold ${fit.fontSize}px "${fontFamily}", "Comic Sans MS", cursive`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'top';
 
-      const totalTextH = lines.length * lineHeight;
-      const startY = minY + (boxH - totalTextH) / 2;
+      const totalTextH = fit.lines.length * fit.lineHeight;
+      const textStartY = minY + Math.max(fit.padding, (boxH - totalTextH) / 2);
+      const textCenterX = minX + boxW / 2;
 
-      for (let i = 0; i < lines.length; i++) {
-        const x = minX + boxW / 2;
-        const y = startY + i * lineHeight;
+      for (let i = 0; i < fit.lines.length; i++) {
+        const ly = textStartY + i * fit.lineHeight;
 
-        // White outline for readability (Ichigo uses text-shadow: 3px)
-        ctx.strokeStyle = 'white';
-        ctx.lineWidth = 4;
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 3;
         ctx.lineJoin = 'round';
         ctx.miterLimit = 2;
-        ctx.strokeText(lines[i], x, y);
+        ctx.strokeText(fit.lines[i], textCenterX, ly);
 
-        // Main text
         ctx.fillStyle = fontColor;
-        ctx.fillText(lines[i], x, y);
+        ctx.fillText(fit.lines[i], textCenterX, ly);
       }
+
+      ctx.restore();
     }
 
-    // Replace image source
     try {
       const newDataUrl = canvas.toDataURL('image/png');
       img.setAttribute(TRANSLATED_ATTR, 'true');
@@ -259,14 +361,23 @@
   // ===== Check if Element Qualifies for Translation =====
   function shouldTranslate(img) {
     if (!isEnabled) return false;
-    if (img.getAttribute(TRANSLATED_ATTR) || img.getAttribute(PROCESSING_ATTR)) return false;
-    if (processingImages.has(img)) return false;
+    if (img.getAttribute(TRANSLATED_ATTR)) return false;
+    if (img.getAttribute(PROCESSING_ATTR)) return false;
+
+    const src = getEffectiveSrc(img);
+    if (!src) return false;
+    if (translatedSrcs.has(src)) return false;
+    if (pendingSrcs.has(src)) return false;
+
     const w = img.naturalWidth || img.width;
     const h = img.naturalHeight || img.height;
     if (w < MIN_IMAGE_SIZE || h < MIN_IMAGE_SIZE) return false;
-    // Skip tiny images, icons, avatars
-    const rect = img.getBoundingClientRect();
-    if (rect.width < 100 || rect.height < 100) return false;
+
+    if (!isStandaloneImagePage()) {
+      const rect = img.getBoundingClientRect();
+      if (rect.width < 100 || rect.height < 100) return false;
+    }
+
     return true;
   }
 
@@ -274,20 +385,23 @@
   async function translateImage(img) {
     if (!shouldTranslate(img)) return;
 
-    processingImages.add(img);
+    const src = getEffectiveSrc(img);
+    if (!src) return;
+
+    console.log('[MangaTranslator] Starting translation for:', src.substring(0, 80));
+    pendingSrcs.add(src);
     img.setAttribute(PROCESSING_ATTR, 'true');
+    showSpinner(img);
 
     try {
       let imageData;
 
-      // Try direct canvas extraction first
       try {
         imageData = await getImageBase64(img);
       } catch (e) {
-        // CORS fallback: fetch image directly
-        if (img.src && (img.src.startsWith('http://') || img.src.startsWith('https://'))) {
+        if (src.startsWith('http://') || src.startsWith('https://')) {
           try {
-            const dataUrl = await fetchImageCrossOrigin(img.src);
+            const dataUrl = await fetchImageCrossOrigin(src);
             const tempImg = new Image();
             tempImg.crossOrigin = 'anonymous';
             await new Promise((resolve, reject) => {
@@ -297,79 +411,79 @@
             });
             imageData = await getImageBase64(tempImg);
           } catch (corsError) {
-            console.warn('[MangaTranslator] CORS blocked for:', img.src?.substring(0, 80));
-            img.removeAttribute(PROCESSING_ATTR);
-            processingImages.delete(img);
+            console.warn('[MangaTranslator] CORS blocked for:', src.substring(0, 80));
+            cleanupProcessing(img, src);
             return;
           }
         } else {
-          img.removeAttribute(PROCESSING_ATTR);
-          processingImages.delete(img);
+          cleanupProcessing(img, src);
           return;
         }
       }
 
-      // Check if we already translated this image content
-      const hash = simpleHash(imageData.dataUrl);
-      if (finishedImageHashes.has(hash)) {
-        img.removeAttribute(PROCESSING_ATTR);
-        processingImages.delete(img);
-        return;
-      }
-
-      // Send to background for translation
+      console.log('[MangaTranslator] Sending to API:', imageData.width, 'x', imageData.height);
       const response = await chrome.runtime.sendMessage({
         kind: 'translateImage',
-        base64Data: imageData.dataUrl
+        base64Data: imageData.dataUrl,
+        width: imageData.width,
+        height: imageData.height
       });
 
       if (response?.error) {
-        img.removeAttribute(PROCESSING_ATTR);
-        processingImages.delete(img);
-
-        // Retry on FullQueue (Ichigo's pattern: retry after delay)
+        console.warn('[MangaTranslator] API error:', response.error);
         if (response.error === 'FullQueue' || response.error === 'RATE_LIMITED') {
-          setTimeout(() => {
-            img.removeAttribute(PROCESSING_ATTR);
-            processingImages.delete(img);
-            translateImage(img);
-          }, RETRY_DELAY + Math.random() * 1000);
+          const retryCount = (retryCountMap.get(src) || 0) + 1;
+          retryCountMap.set(src, retryCount);
+
+          if (retryCount <= MAX_RETRIES) {
+            const delay = BASE_RETRY_DELAY * Math.pow(2, retryCount - 1) + Math.random() * 1000;
+            console.log(`[MangaTranslator] Retry ${retryCount}/${MAX_RETRIES} in ${Math.round(delay)}ms`);
+            setTimeout(() => {
+              img.removeAttribute(PROCESSING_ATTR);
+              pendingSrcs.delete(src);
+              translateImage(img);
+            }, delay);
+            return; // spinner stays during retry
+          } else {
+            retryCountMap.delete(src);
+          }
         }
+        cleanupProcessing(img, src);
         return;
       }
 
-      finishedImageHashes.add(hash);
+      retryCountMap.delete(src);
+      translatedSrcs.add(src);
+      pendingSrcs.delete(src);
+      hideSpinner(img);
 
       if (response?.translations && response.translations.length > 0) {
+        console.log('[MangaTranslator] Got', response.translations.length, 'translations');
         overlayTranslations(img, response.translations, imageData);
       } else {
+        console.log('[MangaTranslator] No text found in image');
         img.setAttribute(TRANSLATED_ATTR, 'no-text');
         img.removeAttribute(PROCESSING_ATTR);
       }
-      processingImages.delete(img);
     } catch (error) {
       console.error('[MangaTranslator] Error:', error);
-      img.removeAttribute(PROCESSING_ATTR);
-      processingImages.delete(img);
+      cleanupProcessing(img, src);
     }
   }
 
-  // Simple hash for deduplication
-  function simpleHash(str) {
-    if (!str) return '';
-    let hash = 0;
-    const step = Math.max(1, Math.floor(str.length / 500));
-    for (let i = 0; i < str.length; i += step) {
-      hash = ((hash << 5) - hash) + str.charCodeAt(i);
-      hash = hash & hash;
-    }
-    return hash.toString(36);
+  function cleanupProcessing(img, src) {
+    img.removeAttribute(PROCESSING_ATTR);
+    pendingSrcs.delete(src);
+    hideSpinner(img);
   }
 
   // ===== Process an Image Element =====
   function processImage(img) {
     if (!isEnabled) return;
     if (img.getAttribute(TRANSLATED_ATTR) || img.getAttribute(PROCESSING_ATTR)) return;
+
+    const src = getEffectiveSrc(img);
+    if (translatedSrcs.has(src) || pendingSrcs.has(src)) return;
 
     if (img.complete && img.naturalWidth > 0) {
       translateImage(img);
@@ -382,75 +496,128 @@
   function scanForImages() {
     if (!isEnabled) return;
     injectFonts();
-    document.querySelectorAll('img').forEach(processImage);
+    console.log('[MangaTranslator] Scanning for images...');
+
+    let count = 0;
+    document.querySelectorAll('img').forEach((img) => {
+      processImage(img);
+      observeWithIntersection(img);
+      count++;
+    });
+
+    document.querySelectorAll('picture img').forEach((img) => {
+      processImage(img);
+      observeWithIntersection(img);
+    });
+
+    document.querySelectorAll('img[data-src], img[data-lazy-src], img[data-original]').forEach((img) => {
+      observeWithIntersection(img);
+    });
+
+    console.log('[MangaTranslator] Found', count, 'img elements');
+  }
+
+  // ===== Standalone Image Handler =====
+  function handleStandaloneImage() {
+    if (!isStandaloneImagePage()) return;
+    if (!isEnabled) return;
+    injectFonts();
+
+    const img = document.querySelector('img');
+    if (!img) return;
+
+    console.log('[MangaTranslator] Standalone image detected');
+    if (img.complete && img.naturalWidth > 0) {
+      translateImage(img);
+    } else {
+      img.addEventListener('load', () => translateImage(img), { once: true });
+    }
   }
 
   // ===== Schedule Initial Scan =====
   function scheduleInitialScan() {
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => setTimeout(scanForImages, 500));
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(scanForImages, 500);
+        setTimeout(handleStandaloneImage, 600);
+      });
     } else {
       setTimeout(scanForImages, 500);
+      setTimeout(handleStandaloneImage, 600);
     }
-    // Delayed scans for lazy-loaded content
-    setTimeout(scanForImages, 3000);
-    setTimeout(scanForImages, 6000);
+    setTimeout(scanForImages, 4000);
   }
 
-  // ===== MutationObserver (Ichigo pattern: watch for new images) =====
+  // ===== IntersectionObserver =====
+  const intersectionObserver = new IntersectionObserver((entries) => {
+    if (!isEnabled) return;
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      const img = entry.target;
+      if (img.nodeName !== 'IMG') continue;
+      if (img.getAttribute(TRANSLATED_ATTR) || img.getAttribute(PROCESSING_ATTR)) continue;
+      const w = img.naturalWidth || img.width;
+      const h = img.naturalHeight || img.height;
+      if (w >= MIN_IMAGE_SIZE && h >= MIN_IMAGE_SIZE) {
+        processImage(img);
+      }
+    }
+  }, { rootMargin: '200px' });
+
+  function observeWithIntersection(img) {
+    if (observedImages.has(img)) return;
+    observedImages.add(img);
+    intersectionObserver.observe(img);
+  }
+
+  // ===== MutationObserver =====
   const mutationObserver = new MutationObserver((mutations) => {
     if (!isEnabled) return;
     for (const mutation of mutations) {
-      for (const node of mutation.addedNodes) {
-        if (node.nodeName === 'IMG') {
-          processImage(node);
-        } else if (node.querySelectorAll) {
-          node.querySelectorAll('img').forEach(processImage);
+      if (mutation.type === 'childList') {
+        for (const node of mutation.addedNodes) {
+          if (node.nodeName === 'IMG') {
+            processImage(node);
+            observeWithIntersection(node);
+          } else if (node.querySelectorAll) {
+            node.querySelectorAll('img').forEach((img) => {
+              processImage(img);
+              observeWithIntersection(img);
+            });
+          }
+        }
+      }
+      if (mutation.type === 'attributes' && mutation.target.nodeName === 'IMG') {
+        const img = mutation.target;
+        const newSrc = getEffectiveSrc(img);
+        if (newSrc && !translatedSrcs.has(newSrc) && !pendingSrcs.has(newSrc)) {
+          if (img.getAttribute(TRANSLATED_ATTR)) {
+            img.removeAttribute(TRANSLATED_ATTR);
+          }
+          if (!img.getAttribute(PROCESSING_ATTR)) {
+            processImage(img);
+          }
         }
       }
     }
   });
-
-  // ===== ResizeObserver (Ichigo pattern: detect lazy-loaded images that resize) =====
-  const resizeObserver = new ResizeObserver((entries) => {
-    if (!isEnabled) return;
-    for (const entry of entries) {
-      const el = entry.target;
-      if (el.nodeName === 'IMG' && !el.getAttribute(TRANSLATED_ATTR) && !el.getAttribute(PROCESSING_ATTR)) {
-        const w = el.naturalWidth || el.width;
-        const h = el.naturalHeight || el.height;
-        if (w >= MIN_IMAGE_SIZE && h >= MIN_IMAGE_SIZE) {
-          translateImage(el);
-        }
-      }
-    }
-  });
-
-  // Observe existing and new images with ResizeObserver
-  function observeImage(img) {
-    try { resizeObserver.observe(img); } catch (e) { /* ignore */ }
-  }
-
-  // ===== Polling (Ichigo pattern: periodic scan for missed images) =====
-  setInterval(() => {
-    if (!isEnabled) return;
-    document.querySelectorAll('img').forEach((img) => {
-      observeImage(img);
-      if (!img.getAttribute(TRANSLATED_ATTR) && !img.getAttribute(PROCESSING_ATTR)) {
-        if (img.complete && img.naturalWidth >= MIN_IMAGE_SIZE && img.naturalHeight >= MIN_IMAGE_SIZE) {
-          translateImage(img);
-        }
-      }
-    });
-  }, POLL_INTERVAL);
 
   // ===== Start Observers =====
-  if (document.body) {
-    mutationObserver.observe(document.body, { childList: true, subtree: true });
-  } else {
-    document.addEventListener('DOMContentLoaded', () => {
-      mutationObserver.observe(document.body, { childList: true, subtree: true });
+  function startObservers() {
+    const target = document.body || document.documentElement;
+    if (!target) return;
+    mutationObserver.observe(target, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['src', 'srcset', 'data-src', 'data-lazy-src', 'data-original']
     });
+  }
+
+  if (document.body) {
+    startObservers();
+  } else {
+    document.addEventListener('DOMContentLoaded', startObservers);
   }
 
   // ===== Message Handler =====
@@ -459,9 +626,12 @@
       const images = document.querySelectorAll('img');
       for (const img of images) {
         if (img.src === message.imageUrl || img.currentSrc === message.imageUrl) {
+          const src = getEffectiveSrc(img);
+          translatedSrcs.delete(src);
+          pendingSrcs.delete(src);
+          retryCountMap.delete(src);
           img.removeAttribute(TRANSLATED_ATTR);
           img.removeAttribute(PROCESSING_ATTR);
-          processingImages.delete(img);
           translateImage(img);
           break;
         }
@@ -470,11 +640,17 @@
 
     if (message.kind === 'toggleTranslation') {
       isEnabled = message.enabled;
-      if (isEnabled) scanForImages();
+      console.log('[MangaTranslator] Translation', isEnabled ? 'enabled' : 'disabled');
+      if (isEnabled) {
+        scanForImages();
+        handleStandaloneImage();
+      }
     }
 
     if (message.kind === 'retranslateAll') {
-      finishedImageHashes.clear();
+      translatedSrcs.clear();
+      pendingSrcs.clear();
+      retryCountMap.clear();
       document.querySelectorAll(`[${TRANSLATED_ATTR}]`).forEach(img => {
         const originalSrc = img.getAttribute(ORIGINAL_SRC_ATTR);
         if (originalSrc) {
@@ -484,12 +660,14 @@
         }
         img.removeAttribute(TRANSLATED_ATTR);
         img.removeAttribute(PROCESSING_ATTR);
-        processingImages.delete(img);
       });
       if (isEnabled) setTimeout(scanForImages, 500);
     }
 
     if (message.kind === 'clearTranslations') {
+      translatedSrcs.clear();
+      pendingSrcs.clear();
+      retryCountMap.clear();
       document.querySelectorAll(`[${TRANSLATED_ATTR}]`).forEach(img => {
         const originalSrc = img.getAttribute(ORIGINAL_SRC_ATTR);
         if (originalSrc) {
@@ -499,7 +677,6 @@
         }
         img.removeAttribute(TRANSLATED_ATTR);
         img.removeAttribute(PROCESSING_ATTR);
-        processingImages.delete(img);
       });
     }
   });
