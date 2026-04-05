@@ -1,0 +1,136 @@
+{
+  "sample": "sample6",
+  "image": "sample 6.jpg",
+  "text_conf": 0.35,
+  "bubble_conf": 0.5,
+  "overlap_threshold": 0.5,
+  "padding": 8,
+  "inpainter": "LaMa",
+  "num_text": 10,
+  "num_bubble_text": 9,
+  "num_floating_text": 1,
+  "num_bubbles": 10,
+  "bubble_text": [
+    {
+      "box": {
+        "x1": 864,
+        "y1": 1395,
+        "x2": 1041,
+        "y2": 1698,
+        "width": 177,
+        "height": 303
+      },
+      "overlap": 1.0,
+      "bubble_idx": 2
+    },
+    {
+      "box": {
+        "x1": 325,
+        "y1": 884,
+        "x2": 452,
+        "y2": 1192,
+        "width": 127,
+        "height": 308
+      },
+      "overlap": 1.0,
+      "bubble_idx": 3
+    },
+    {
+      "box": {
+        "x1": 1133,
+        "y1": 865,
+        "x2": 1223,
+        "y2": 1146,
+        "width": 90,
+        "height": 281
+      },
+      "overlap": 1.0,
+      "bubble_idx": 1
+    },
+    {
+      "box": {
+        "x1": 656,
+        "y1": 842,
+        "x2": 772,
+        "y2": 1251,
+        "width": 116,
+        "height": 409
+      },
+      "overlap": 1.0,
+      "bubble_idx": 7
+    },
+    {
+      "box": {
+        "x1": 302,
+        "y1": 163,
+        "x2": 391,
+        "y2": 397,
+        "width": 89,
+        "height": 234
+      },
+      "overlap": 1.0,
+      "bubble_idx": 0
+    },
+    {
+      "box": {
+        "x1": 876,
+        "y1": 856,
+        "x2": 951,
+        "y2": 1006,
+        "width": 75,
+        "height": 150
+      },
+      "overlap": 1.0,
+      "bubble_idx": 4
+    },
+    {
+      "box": {
+        "x1": 524,
+        "y1": 849,
+        "x2": 570,
+        "y2": 945,
+        "width": 46,
+        "height": 96
+      },
+      "overlap": 1.0,
+      "bubble_idx": 9
+    },
+    {
+      "box": {
+        "x1": 646,
+        "y1": 1332,
+        "x2": 677,
+        "y2": 1425,
+        "width": 31,
+        "height": 93
+      },
+      "overlap": 1.0,
+      "bubble_idx": 8
+    },
+    {
+      "box": {
+        "x1": 198,
+        "y1": 1305,
+        "x2": 218,
+        "y2": 1379,
+        "width": 20,
+        "height": 74
+      },
+      "overlap": 1.0,
+      "bubble_idx": 5
+    }
+  ],
+  "floating_text": [
+    {
+      "box": {
+        "x1": 64,
+        "y1": 108,
+        "x2": 110,
+        "y2": 411,
+        "width": 46,
+        "height": 303
+      },
+      "overlap": 0.0
+    }
+  ]
+}

@@ -109,6 +109,46 @@ content.js         →  Image detection (MutationObserver + ResizeObserver + pol
      ↕
 translationPanel.js → Click-and-drag selection, tab capture, zoom-aware positioning
 ```
+
+### Python ML Pipeline (`free-manga-translator-codex/`)
+
+A deep learning pipeline for manga text detection, classification, and surgical removal:
+
+```
+Raw manga image
+      │
+  ┌───┴───┐
+  ▼       ▼
+MODEL A  MODEL B                    ← parallel detection
+(ONNX)   (PyTorch)
+  │       │
+  ├─boxes │
+  ├─seg   │
+  ▼       ▼
+text_boxes + seg_mask  bubble_masks
+  │              │
+  └──────┬───────┘
+         ▼
+  classify_text_regions()            ← intersection test
+         │
+  ┌──────┴──────┐
+  ▼             ▼
+bubble_text   floating_text
+  │             │
+  ▼             ▼
+MODEL C (LaMa)  SKIP                ← selective inpainting
+  │
+  ▼
+perfectly inpainted image            ← backgrounds preserved
+```
+
+**Three models work together:**
+- **Model A** (comic-text-detector, ONNX) -- text bounding boxes + pixel-level segmentation masks
+- **Model B** (manga109-segmentation-bubble, YOLOv11n-seg) -- speech bubble masks (99%+ mAP)
+- **Model C** (LaMa, ONNX) -- deep learning inpainting with Fourier convolutions
+
+Only text inside detected speech bubbles is removed. Floating text over artwork is protected.
+See `free-manga-translator-codex/instructions before you proceed.md` for full documentation.
  
 ### Key Techniques (inspired by Ichigo Manga Translator)
 - **Set-based request deduplication** prevents duplicate API calls
@@ -131,16 +171,23 @@ free-manga-translator/
 ├── popup.html              # Extension popup UI
 ├── popup.css               # Popup styling
 ├── popup.js                # Popup logic (multi-key management)
-├── icons/
-│   ├── icon16.png
-│   ├── icon48.png
-│   ├── icon128.png
-│   └── icon128-disabled.png
-├── fonts/
+├── icons/                  # Extension icons (16/48/128px)
+├── fonts/                  # Comic-style fonts
 │   ├── CCWildWords-Regular.otf
 │   ├── Bangers-Regular.ttf
 │   └── PatrickHand-Regular.ttf
-└── README.md
+├── README.md
+│
+└── free-manga-translator-codex/     # Python ML pipeline
+    ├── ml_region_lib.py             # Core: triple-model detection + LaMa inpainting
+    ├── models/
+    │   ├── comictextdetector.pt.onnx        # Model A: text detector + seg mask
+    │   ├── manga109_bubble/best.pt          # Model B: bubble segmentor
+    │   ├── lama/lama_fp32.onnx             # Model C: LaMa inpainter
+    │   └── README.md
+    ├── samples/                             # Test images + ground truth refs
+    ├── instructions before you proceed.md   # Full pipeline docs
+    └── YOLO_TRAINING_GUIDE.md              # Fine-tuning guide
 ```
  
 ## Supported Sites

@@ -1,0 +1,86 @@
+{
+  "sample": "sample4",
+  "image": "sample 4.png",
+  "text_conf": 0.35,
+  "bubble_conf": 0.5,
+  "overlap_threshold": 0.5,
+  "padding": 8,
+  "num_text": 6,
+  "num_bubble_text": 4,
+  "num_floating_text": 2,
+  "num_bubbles": 4,
+  "bubble_text": [
+    {
+      "box": {
+        "x1": 139,
+        "y1": 158,
+        "x2": 220,
+        "y2": 273,
+        "width": 81,
+        "height": 115
+      },
+      "overlap": 1.0,
+      "bubble_idx": 0
+    },
+    {
+      "box": {
+        "x1": 110,
+        "y1": 672,
+        "x2": 171,
+        "y2": 890,
+        "width": 61,
+        "height": 218
+      },
+      "overlap": 1.0,
+      "bubble_idx": 1
+    },
+    {
+      "box": {
+        "x1": 545,
+        "y1": 563,
+        "x2": 585,
+        "y2": 756,
+        "width": 40,
+        "height": 193
+      },
+      "overlap": 1.0,
+      "bubble_idx": 2
+    },
+    {
+      "box": {
+        "x1": 467,
+        "y1": 62,
+        "x2": 638,
+        "y2": 319,
+        "width": 171,
+        "height": 257
+      },
+      "overlap": 0.677,
+      "bubble_idx": 3
+    }
+  ],
+  "floating_text": [
+    {
+      "box": {
+        "x1": 105,
+        "y1": 382,
+        "x2": 159,
+        "y2": 523,
+        "width": 54,
+        "height": 141
+      },
+      "overlap": 0.0
+    },
+    {
+      "box": {
+        "x1": 523,
+        "y1": 384,
+        "x2": 621,
+        "y2": 452,
+        "width": 98,
+        "height": 68
+      },
+      "overlap": 0.0
+    }
+  ]
+}

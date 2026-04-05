@@ -1,0 +1,76 @@
+{
+  "sample": "sample2",
+  "image": "sample 2.jpeg",
+  "text_conf": 0.35,
+  "bubble_conf": 0.5,
+  "overlap_threshold": 0.5,
+  "padding": 8,
+  "inpainter": "LaMa",
+  "num_text": 5,
+  "num_bubble_text": 5,
+  "num_floating_text": 0,
+  "num_bubbles": 6,
+  "bubble_text": [
+    {
+      "box": {
+        "x1": 72,
+        "y1": 268,
+        "x2": 114,
+        "y2": 320,
+        "width": 42,
+        "height": 52
+      },
+      "overlap": 0.995,
+      "bubble_idx": 4
+    },
+    {
+      "box": {
+        "x1": 199,
+        "y1": 15,
+        "x2": 284,
+        "y2": 91,
+        "width": 85,
+        "height": 76
+      },
+      "overlap": 0.976,
+      "bubble_idx": 0
+    },
+    {
+      "box": {
+        "x1": 48,
+        "y1": 14,
+        "x2": 117,
+        "y2": 84,
+        "width": 69,
+        "height": 70
+      },
+      "overlap": 0.981,
+      "bubble_idx": 2
+    },
+    {
+      "box": {
+        "x1": 284,
+        "y1": 268,
+        "x2": 341,
+        "y2": 342,
+        "width": 57,
+        "height": 74
+      },
+      "overlap": 0.989,
+      "bubble_idx": 1
+    },
+    {
+      "box": {
+        "x1": 133,
+        "y1": 266,
+        "x2": 264,
+        "y2": 349,
+        "width": 131,
+        "height": 83
+      },
+      "overlap": 0.965,
+      "bubble_idx": 3
+    }
+  ],
+  "floating_text": []
+}

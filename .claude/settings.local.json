@@ -28,7 +28,30 @@
       "Bash(find samples/ -name \"*.json\" -type f -delete -print)",
       "Bash(rm -v samples/claude_run_summary_claude.json)",
       "Bash(rm -v samples/sample_retest_summary_final.json)",
-      "Bash(find samples/ -name \"*debug*\" -type f -delete -print)"
+      "Bash(find samples/ -name \"*debug*\" -type f -delete -print)",
+      "WebSearch",
+      "Bash(pip install:*)",
+      "Bash(curl -s \"https://huggingface.co/api/models?search=manga+bubble&limit=20\")",
+      "Bash(python3 -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(m.get\\('modelId',''\\),'-',m.get\\('pipeline_tag',''\\),'-',m.get\\('downloads',0\\),'downloads'\\) for m in data]\")",
+      "Bash(curl -s \"https://huggingface.co/api/models?search=speech+bubble+segmentation&limit=20\")",
+      "Bash(curl -s \"https://huggingface.co/api/models?search=comic+bubble+detection&limit=20\")",
+      "Bash(curl -s \"https://huggingface.co/api/models?search=manga+yolo+segment&limit=20\")",
+      "Bash(curl -s \"https://huggingface.co/api/models?search=kitsumed&limit=10\")",
+      "Bash(curl -s \"https://huggingface.co/api/models?search=manga-image-translator&limit=10\")",
+      "WebFetch(domain:github.com)",
+      "Bash(curl -s \"https://huggingface.co/api/models?search=lama+onnx&limit=10\")",
+      "Bash(python3 -c \"import sys,json; data=json.load\\(sys.stdin\\); [print\\(m.get\\('modelId',''\\)\\) for m in data]\")",
+      "Bash(curl -s \"https://huggingface.co/api/models?search=lama+inpainting&limit=10\")",
+      "Bash(curl -s \"https://api.github.com/repos/zyddnys/manga-image-translator/releases?per_page=10\")",
+      "Bash(python3 -c \" import sys,json data=json.load\\(sys.stdin\\) for rel in data: tag = rel.get\\('tag_name',''\\) for asset in rel.get\\('assets',[]\\): name = asset.get\\('name',''\\) if 'lama' in name.lower\\(\\) or 'inpaint' in name.lower\\(\\) or name.endswith\\('.onnx'\\): print\\(f'{tag}: {name} \\({asset.get\\(\\\\\"size\\\\\",0\\)//1024//1024}MB\\) -> {asset.get\\(\\\\\"browser_download_url\\\\\",\\\\\"\\\\\"\\)}'\\) \")",
+      "Bash(curl -s \"https://huggingface.co/api/models/Carve/LaMa-ONNX/tree/main\")",
+      "Bash(python3 -c \" import sys,json data=json.load\\(sys.stdin\\) for f in data: if f.get\\('path',''\\).endswith\\('.onnx'\\): print\\(f'{f[\\\\\"path\\\\\"]} \\({f.get\\(\\\\\"size\\\\\",0\\)//1024//1024}MB\\)'\\) \")",
+      "Bash(curl -s \"https://huggingface.co/api/models/anyisalin/big-lama-onnx/tree/main\")",
+      "Bash(curl -s \"https://huggingface.co/api/models/mayocream/lama-manga-onnx/tree/main\")",
+      "Bash(curl -s \"https://huggingface.co/api/models/ogkalu/lama-manga-onnx-dynamic/tree/main\")",
+      "Bash(curl -s \"https://huggingface.co/api/models/opencv/inpainting_lama/tree/main\")",
+      "Bash(python3 -c \" import sys,json data=json.load\\(sys.stdin\\) for f in data: p = f.get\\('path',''\\) if p.endswith\\('.onnx'\\) or 'lama' in p.lower\\(\\): print\\(f'{p} \\({f.get\\(\\\\\"size\\\\\",0\\)//1024//1024}MB\\)'\\) \")",
+      "Bash(curl:*)"
     ]
   }
 }

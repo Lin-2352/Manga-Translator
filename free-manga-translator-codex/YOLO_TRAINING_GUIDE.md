@@ -2,6 +2,11 @@
 
 How to train a custom YOLOv8 model on your difficult manga samples (1-6).
 
+> **Note:** The current pipeline uses a pre-trained `comictextdetector.pt.onnx` (ONNX) for
+> text detection. This guide is for cases where the pre-trained model fails on specific manga
+> styles and you need to train a custom detector. For bubble segmentation, the `manga109-
+> segmentation-bubble` model already has 99%+ mAP and generally does not need fine-tuning.
+
 ---
 
 ## Step 1: Organize Your Images
@@ -149,29 +154,28 @@ This prints mAP (mean Average Precision). For text detection, aim for mAP50 > 0.
 
 ## Step 8: Use Your Trained Model
 
-Copy `runs/detect/manga-text-detector/weights/best.pt` into your project's `models/` folder, then use it with `ml_region_lib.py`:
+Copy `runs/detect/manga-text-detector/weights/best.pt` into your project's `models/` folder.
+
+**Important:** The current pipeline (`ml_region_lib.py`) uses an ONNX model that outputs BOTH
+bounding boxes and a pixel-level segmentation mask. A custom YOLO detector would only provide
+bounding boxes. To fully integrate a custom model, you would need to either:
+
+1. Export it to ONNX with segmentation support, or
+2. Modify `detect_text()` in `ml_region_lib.py` to use the YOLO model for boxes and fall
+   back to the pre-trained comic-text-detector for the seg mask.
+
+For testing the detector alone:
 
 ```bash
-python ml_region_lib.py \
-  --image sample.png \
-  --model models/best.pt \
-  --backend yolo \
-  --conf 0.35 \
-  --padding 8
-```
+# Using Ultralytics CLI
+yolo detect predict model=models/best.pt source=samples/sample1/sample.png conf=0.35
 
-Or in code:
-
-```python
-from ml_region_lib import MLConfig, run_pipeline
-
-cfg = MLConfig(
-    model_path="models/best.pt",
-    backend="yolo",
-    confidence_threshold=0.35,
-    mask_padding=8,
-)
-result = run_pipeline("sample.png", cfg)
+# Or in Python
+from ultralytics import YOLO
+model = YOLO("models/best.pt")
+results = model("sample.png", conf=0.35, imgsz=1024)
+for box in results[0].boxes:
+    print(box.xyxy, box.conf)
 ```
 
 ---
@@ -192,3 +196,44 @@ result = run_pipeline("sample.png", cfg)
    ```bash
    yolo detect train ... freeze=10
    ```
+
+---
+
+## Appendix: Training a Bubble Segmentor
+
+The same YOLO workflow applies for training a custom speech bubble segmentor, but using
+**instance segmentation** instead of detection:
+
+```bash
+yolo segment train \
+  model=yolov8n-seg.pt \
+  data=dataset/manga_bubbles.yaml \
+  epochs=100 \
+  imgsz=1600 \
+  batch=2 \
+  name=manga-bubble-seg
+```
+
+Labels for segmentation use polygon format instead of bounding boxes:
+```
+<class_id> <x1> <y1> <x2> <y2> <x3> <y3> ... <xN> <yN>
+```
+All coordinates are normalized (0.0 to 1.0). Use [Roboflow](https://roboflow.com/) or
+[CVAT](https://www.cvat.ai/) to draw polygon masks around bubble shapes.
+
+The current pipeline uses `manga109-segmentation-bubble` (99%+ mAP on Manga109 data).
+Custom training is only needed if you encounter manga styles with unusual bubble shapes
+that the pre-trained model cannot handle.
+
+---
+
+## Appendix: Current Pipeline Architecture
+
+For context, the full pipeline uses three models (see `instructions before you proceed.md`):
+
+1. **Model A** — comic-text-detector (ONNX): text boxes + pixel seg mask
+2. **Model B** — manga109-segmentation-bubble (YOLOv11n-seg): speech bubble masks
+3. **Model C** — LaMa (ONNX): deep learning inpainting
+
+A custom YOLO text detector (this guide) would replace only Model A's bounding box output.
+The seg mask and LaMa inpainting would still be needed for high-quality text removal.

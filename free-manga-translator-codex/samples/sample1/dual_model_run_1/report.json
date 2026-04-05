@@ -1,0 +1,75 @@
+{
+  "sample": "sample1",
+  "image": "sample.png",
+  "text_conf": 0.35,
+  "bubble_conf": 0.25,
+  "overlap_threshold": 0.5,
+  "padding": 8,
+  "num_text": 5,
+  "num_bubble_text": 5,
+  "num_floating_text": 0,
+  "num_bubbles": 5,
+  "bubble_text": [
+    {
+      "box": {
+        "x1": 793,
+        "y1": 1405,
+        "x2": 926,
+        "y2": 1631,
+        "width": 133,
+        "height": 226
+      },
+      "overlap": 1.0,
+      "bubble_idx": 1
+    },
+    {
+      "box": {
+        "x1": 871,
+        "y1": 1011,
+        "x2": 966,
+        "y2": 1177,
+        "width": 95,
+        "height": 166
+      },
+      "overlap": 1.0,
+      "bubble_idx": 3
+    },
+    {
+      "box": {
+        "x1": 39,
+        "y1": 1057,
+        "x2": 205,
+        "y2": 1312,
+        "width": 166,
+        "height": 255
+      },
+      "overlap": 1.0,
+      "bubble_idx": 0
+    },
+    {
+      "box": {
+        "x1": 64,
+        "y1": 684,
+        "x2": 193,
+        "y2": 882,
+        "width": 129,
+        "height": 198
+      },
+      "overlap": 1.0,
+      "bubble_idx": 2
+    },
+    {
+      "box": {
+        "x1": 908,
+        "y1": 623,
+        "x2": 969,
+        "y2": 763,
+        "width": 61,
+        "height": 140
+      },
+      "overlap": 1.0,
+      "bubble_idx": 4
+    }
+  ],
+  "floating_text": []
+}

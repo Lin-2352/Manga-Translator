@@ -1,0 +1,111 @@
+{
+  "sample": "sample5",
+  "image": "sample 5.jpg",
+  "text_conf": 0.35,
+  "bubble_conf": 0.25,
+  "overlap_threshold": 0.5,
+  "padding": 8,
+  "num_text": 8,
+  "num_bubble_text": 8,
+  "num_floating_text": 0,
+  "num_bubbles": 10,
+  "bubble_text": [
+    {
+      "box": {
+        "x1": 49,
+        "y1": 223,
+        "x2": 190,
+        "y2": 448,
+        "width": 141,
+        "height": 225
+      },
+      "overlap": 1.0,
+      "bubble_idx": 0
+    },
+    {
+      "box": {
+        "x1": 351,
+        "y1": 174,
+        "x2": 421,
+        "y2": 350,
+        "width": 70,
+        "height": 176
+      },
+      "overlap": 1.0,
+      "bubble_idx": 3
+    },
+    {
+      "box": {
+        "x1": 1026,
+        "y1": 1133,
+        "x2": 1103,
+        "y2": 1273,
+        "width": 77,
+        "height": 140
+      },
+      "overlap": 1.0,
+      "bubble_idx": 2
+    },
+    {
+      "box": {
+        "x1": 897,
+        "y1": 1510,
+        "x2": 1153,
+        "y2": 1680,
+        "width": 256,
+        "height": 170
+      },
+      "overlap": 0.803,
+      "bubble_idx": 1
+    },
+    {
+      "box": {
+        "x1": 173,
+        "y1": 1081,
+        "x2": 475,
+        "y2": 1342,
+        "width": 302,
+        "height": 261
+      },
+      "overlap": 0.616,
+      "bubble_idx": 4
+    },
+    {
+      "box": {
+        "x1": 546,
+        "y1": 169,
+        "x2": 629,
+        "y2": 248,
+        "width": 83,
+        "height": 79
+      },
+      "overlap": 1.0,
+      "bubble_idx": 5
+    },
+    {
+      "box": {
+        "x1": 725,
+        "y1": 199,
+        "x2": 753,
+        "y2": 275,
+        "width": 28,
+        "height": 76
+      },
+      "overlap": 1.0,
+      "bubble_idx": 6
+    },
+    {
+      "box": {
+        "x1": 1069,
+        "y1": 1,
+        "x2": 1188,
+        "y2": 344,
+        "width": 119,
+        "height": 343
+      },
+      "overlap": 0.603,
+      "bubble_idx": 8
+    }
+  ],
+  "floating_text": []
+}
