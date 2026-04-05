@@ -25,7 +25,7 @@ import json
 import textwrap
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple
 
 import cv2
 import numpy as np
@@ -78,6 +78,24 @@ class MLConfig:
     confidence_threshold: float = 0.35
     nms_iou_threshold: float = 0.45
     input_size: int = 1024
+
+    # Model A-S: semantic text detector/classifier (YOLO .pt or .onnx)
+    semantic_model_path: str = "models/semantic/comic-text-and-bubble-detector.onnx"
+    semantic_confidence: float = 0.20
+    semantic_nms_iou: float = 0.45
+    semantic_input_size: int = 1600
+    semantic_max_det: int = 400
+
+    # Step 2 precision controls (reduce non-text false positives)
+    semantic_dialogue_confidence: float = 0.40
+    semantic_onomatopoeia_confidence: float = 0.55
+    semantic_post_nms_iou: float = 0.35
+    semantic_min_box_area: int = 160
+    semantic_max_box_area_ratio: float = 0.18
+    semantic_min_dim: int = 10
+    semantic_min_ink_ratio: float = 0.015
+    semantic_max_ink_ratio: float = 0.70
+    semantic_min_edge_ratio: float = 0.004
 
     # Model B: bubble segmentor (PyTorch/Ultralytics)
     bubble_model_path: str = "models/manga109_bubble/best.pt"
@@ -147,6 +165,97 @@ def load_text_model(model_path: str, allow_cpu: bool = False):
     return session
 
 
+def load_semantic_model(model_path: str, allow_cpu: bool = False) -> SemanticModelHandle:
+    """
+    Load semantic text detector/classifier.
+    Supports:
+      - PyTorch/Ultralytics weights (.pt) -> STRICT cuda:0 by default
+      - ONNX weights (.onnx)             -> STRICT CUDAExecutionProvider by default
+    """
+    suffix = Path(model_path).suffix.lower()
+
+    # ONNX path: enforce CUDAExecutionProvider availability
+    if suffix == ".onnx":
+        import onnxruntime as ort
+
+        providers = ['CUDAExecutionProvider', 'CPUExecutionProvider'] if allow_cpu else ['CUDAExecutionProvider']
+        try:
+            session = ort.InferenceSession(model_path, providers=providers)
+        except Exception as e:
+            raise RuntimeError(
+                f"CUDAExecutionProvider REQUIRED for semantic ONNX model but unavailable.\n"
+                f"Error: {e}\n"
+                f"Fix: install onnxruntime-gpu + CUDA 12.x runtime, or use allow_cpu=True for development."
+            ) from e
+
+        active = session.get_providers()
+        has_cuda_ep = 'CUDAExecutionProvider' in active
+        if not allow_cpu and not has_cuda_ep:
+            raise RuntimeError(
+                "Semantic ONNX model loaded without CUDAExecutionProvider while CUDA lock is required."
+            )
+
+        device = 'cuda:0' if has_cuda_ep else 'cpu'
+
+        # RT-DETR ONNX exported by HF expects 2 inputs:
+        #   images [N,3,H,W] float32 (rescaled)
+        #   orig_target_sizes [N,2] int64 (h,w)
+        input_names = {i.name for i in session.get_inputs()}
+        if {'images', 'orig_target_sizes'}.issubset(input_names):
+            # Known class order from ogkalu/comic-text-and-bubble-detector config:
+            # 0=bubble, 1=text_bubble, 2=text_free
+            label_map = {0: 'bubble', 1: 'text_bubble', 2: 'text_free'}
+            print(
+                "  [Model A-S] Semantic detector (RT-DETR ONNX): "
+                + ("CUDAExecutionProvider LOCKED" if has_cuda_ep else "CPU (allow_cpu=True)")
+            )
+            return SemanticModelHandle(
+                model=session,
+                device=device,
+                backend="onnx_rtdetr",
+                input_name='images',
+                size_input_name='orig_target_sizes',
+                label_map=label_map,
+            )
+
+        # Fallback: non-RTDETR ONNX loaded through Ultralytics
+        from ultralytics import YOLO
+        print(
+            "  [Model A-S] Semantic detector (ONNX): "
+            + ("CUDAExecutionProvider LOCKED" if has_cuda_ep else "CPU (allow_cpu=True)")
+        )
+        return SemanticModelHandle(
+            model=YOLO(model_path),
+            device=device,
+            backend="yolo_onnx",
+        )
+
+    # PyTorch path: enforce cuda:0
+    import torch
+    from ultralytics import YOLO
+
+    if not allow_cpu and not torch.cuda.is_available():
+        raise RuntimeError(
+            "CUDA GPU REQUIRED for semantic PyTorch model but unavailable.\n"
+            "Fix: Install PyTorch with CUDA support.\n"
+            "Or: allow_cpu=True for development"
+        )
+
+    device = "cuda:0" if torch.cuda.is_available() else "cpu"
+    if not allow_cpu and device != "cuda:0":
+        raise RuntimeError("CUDA required but PyTorch cannot access gpu:0")
+
+    print(
+        "  [Model A-S] Semantic detector (PyTorch): "
+        + ("CUDA:0 LOCKED" if device == "cuda:0" else "CPU (allow_cpu=True)")
+    )
+    return SemanticModelHandle(
+        model=YOLO(model_path),
+        device=device,
+        backend="yolo_pt",
+    )
+
+
 def _preprocess(image: np.ndarray, input_size: int) -> np.ndarray:
     resized = cv2.resize(image, (input_size, input_size))
     blob = resized.astype(np.float32) / 255.0
@@ -181,6 +290,31 @@ def _nms(boxes: np.ndarray, scores: np.ndarray, iou_thresh: float) -> List[int]:
 class TextDetectionResult:
     boxes: List[Box]
     seg_mask: np.ndarray   # [H_orig, W_orig] binary uint8 (255 = text pixel)
+
+
+@dataclass
+class SemanticModelHandle:
+    model: object
+    device: str
+    backend: str  # "yolo_pt" or "yolo_onnx"
+    input_name: Optional[str] = None
+    size_input_name: Optional[str] = None
+    label_map: Dict[int, str] = field(default_factory=dict)
+
+
+@dataclass
+class SemanticTextRegion:
+    box: Box
+    class_id: int
+    raw_class_name: str
+    semantic_class: str   # "dialogue" | "onomatopoeia"
+    action: str           # "erase" | "skip_protect"
+    confidence: float
+
+
+@dataclass
+class SemanticDetectionResult:
+    regions: List[SemanticTextRegion]
 
 
 def detect_text(session, image: np.ndarray, cfg: MLConfig) -> TextDetectionResult:
@@ -225,6 +359,203 @@ def detect_text(session, image: np.ndarray, cfg: MLConfig) -> TextDetectionResul
     seg_resized = seg_resized * 255  # 0 or 255
 
     return TextDetectionResult(boxes=boxes, seg_mask=seg_resized)
+
+
+def detect_semantic_text_regions(
+    semantic_handle: SemanticModelHandle,
+    image: np.ndarray,
+    cfg: MLConfig,
+) -> SemanticDetectionResult:
+    """
+    Run semantic detector and return detected text regions with STEP-2 semantic
+    classes and actions.
+
+    NOTE: Step 1 only.
+    In Step 2 we remap raw model labels as follows:
+      - text_bubble -> dialogue      (erase)
+      - text_free   -> onomatopoeia  (skip_protect)
+      - bubble      -> dropped/ignored
+    """
+    def _norm(name: str) -> str:
+        return name.strip().lower().replace(" ", "_")
+
+    def _remap(raw_name: str) -> Tuple[Optional[str], Optional[str]]:
+        rn = _norm(raw_name)
+        if rn == "text_bubble":
+            return "dialogue", "erase"
+        if rn == "text_free":
+            return "onomatopoeia", "skip_protect"
+        if rn == "bubble":
+            return None, None  # fully ignore bubble class from Model A semantic output
+        return None, None
+
+    h, w = image.shape[:2]
+    image_area = max(1, h * w)
+
+    # Collect raw candidates first, then apply shared post-filters + class-wise NMS.
+    candidates: List[Tuple[int, str, str, str, float, Box]] = []
+
+    def _passes_geometry(b: Box) -> bool:
+        if b.width < cfg.semantic_min_dim or b.height < cfg.semantic_min_dim:
+            return False
+        area = b.width * b.height
+        if area < cfg.semantic_min_box_area:
+            return False
+        if area / image_area > cfg.semantic_max_box_area_ratio:
+            return False
+        return True
+
+    def _passes_textness(b: Box) -> bool:
+        roi = image[b.y1:b.y2, b.x1:b.x2]
+        if roi.size == 0:
+            return False
+        gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+        # Ink density via Otsu-inverted binary map
+        _, bw = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+        ink_ratio = float(np.count_nonzero(bw)) / max(1, bw.size)
+        if ink_ratio < cfg.semantic_min_ink_ratio or ink_ratio > cfg.semantic_max_ink_ratio:
+            return False
+        # Structural edges ratio to suppress flat/background patches
+        edges = cv2.Canny(gray, 80, 180)
+        edge_ratio = float(np.count_nonzero(edges)) / max(1, edges.size)
+        if edge_ratio < cfg.semantic_min_edge_ratio:
+            return False
+        return True
+
+    def _score_gate(semantic_class: str, score: float) -> bool:
+        if semantic_class == "dialogue":
+            return score >= cfg.semantic_dialogue_confidence
+        if semantic_class == "onomatopoeia":
+            return score >= cfg.semantic_onomatopoeia_confidence
+        return False
+
+    if semantic_handle.backend == "onnx_rtdetr":
+        # HF RT-DETR preprocessor semantics:
+        # resize to 640x640 + rescale by 1/255 (no mean/std normalize)
+        resized = cv2.resize(image, (640, 640), interpolation=cv2.INTER_LINEAR)
+        inp = resized.astype(np.float32) / 255.0
+        inp = np.transpose(inp, (2, 0, 1))[np.newaxis]  # [1,3,640,640]
+        orig_sizes = np.array([[h, w]], dtype=np.int64)
+
+        labels, boxes, scores = semantic_handle.model.run(None, {
+            semantic_handle.input_name or 'images': inp,
+            semantic_handle.size_input_name or 'orig_target_sizes': orig_sizes,
+        })
+
+        lbl = labels[0].astype(np.int32)
+        bxs = boxes[0]
+        scs = scores[0]
+
+        for cls_id, box, score in zip(lbl, bxs, scs):
+            score = float(score)
+            if score < cfg.semantic_confidence:
+                continue
+
+            raw_name = semantic_handle.label_map.get(int(cls_id), f"class_{int(cls_id)}")
+            semantic_class, action = _remap(raw_name)
+            if semantic_class is None:
+                continue  # drop raw bubble/unknown classes
+            if not _score_gate(semantic_class, score):
+                continue
+
+            x1, y1, x2, y2 = box.tolist()
+            bx1 = int(np.clip(np.floor(float(x1)), 0, max(0, w - 1)))
+            by1 = int(np.clip(np.floor(float(y1)), 0, max(0, h - 1)))
+            bx2 = int(np.clip(np.ceil(float(x2)), 0, w))
+            by2 = int(np.clip(np.ceil(float(y2)), 0, h))
+            if bx2 <= bx1 or by2 <= by1:
+                continue
+
+            b = Box(x1=bx1, y1=by1, x2=bx2, y2=by2)
+            if not _passes_geometry(b):
+                continue
+            if not _passes_textness(b):
+                continue
+
+            candidates.append((
+                int(cls_id), raw_name, semantic_class, action or "skip_protect", score, b
+            ))
+
+    if semantic_handle.backend != "onnx_rtdetr":
+        # Ultralytics path (raw cv2 image directly; no manual /255)
+        predict_kwargs = dict(
+            source=image,
+            conf=cfg.semantic_confidence,
+            iou=cfg.semantic_nms_iou,
+            imgsz=cfg.semantic_input_size,
+            max_det=cfg.semantic_max_det,
+            verbose=False,
+        )
+        if semantic_handle.backend == "yolo_pt":
+            predict_kwargs["device"] = semantic_handle.device
+
+        results = semantic_handle.model.predict(**predict_kwargs)
+        r = results[0]
+        if r.boxes is None or len(r.boxes) == 0:
+            return SemanticDetectionResult(regions=[])
+
+        names = r.names if isinstance(r.names, dict) else {i: n for i, n in enumerate(r.names)}
+        xyxy = r.boxes.xyxy.detach().cpu().numpy()
+        confs = r.boxes.conf.detach().cpu().numpy()
+        clss = r.boxes.cls.detach().cpu().numpy().astype(np.int32)
+
+        for (x1, y1, x2, y2), score, cls_id in zip(xyxy, confs, clss):
+            raw_name = str(names.get(int(cls_id), f"class_{int(cls_id)}"))
+            semantic_class, action = _remap(raw_name)
+            if semantic_class is None:
+                continue  # drop bubble/unknown
+            score = float(score)
+            if not _score_gate(semantic_class, score):
+                continue
+
+            bx1 = int(np.clip(np.floor(float(x1)), 0, max(0, w - 1)))
+            by1 = int(np.clip(np.floor(float(y1)), 0, max(0, h - 1)))
+            bx2 = int(np.clip(np.ceil(float(x2)), 0, w))
+            by2 = int(np.clip(np.ceil(float(y2)), 0, h))
+            if bx2 <= bx1 or by2 <= by1:
+                continue
+
+            b = Box(x1=bx1, y1=by1, x2=bx2, y2=by2)
+            if not _passes_geometry(b):
+                continue
+            if not _passes_textness(b):
+                continue
+
+            candidates.append((
+                int(cls_id), raw_name, semantic_class, action or "skip_protect", score, b
+            ))
+
+    # Class-wise NMS to reduce duplicate/noisy boxes.
+    regions: List[SemanticTextRegion] = []
+    for sem in ("dialogue", "onomatopoeia"):
+        subset = [c for c in candidates if c[2] == sem]
+        if not subset:
+            continue
+
+        boxes_xywh = [[c[5].x1, c[5].y1, c[5].width, c[5].height] for c in subset]
+        scores_arr = [float(c[4]) for c in subset]
+        score_thr = cfg.semantic_dialogue_confidence if sem == "dialogue" else cfg.semantic_onomatopoeia_confidence
+        keep = cv2.dnn.NMSBoxes(boxes_xywh, scores_arr, score_thr, cfg.semantic_post_nms_iou)
+
+        if keep is None or len(keep) == 0:
+            continue
+
+        keep_idx = np.array(keep).reshape(-1).tolist()
+        for k in keep_idx:
+            cls_id, raw_name, semantic_class, action, score, b = subset[k]
+            regions.append(
+                SemanticTextRegion(
+                    box=b,
+                    class_id=int(cls_id),
+                    raw_class_name=raw_name,
+                    semantic_class=semantic_class,
+                    action=action,
+                    confidence=float(score),
+                )
+            )
+
+    regions.sort(key=lambda d: d.confidence, reverse=True)
+    return SemanticDetectionResult(regions=regions)
 
 
 # ===================================================================
@@ -363,9 +694,14 @@ def lama_inpaint(
 class ClassifiedText:
     box: Box
     expanded_box: Box
-    text_type: str       # "bubble_text" or "floating_text"
+    text_type: str       # legacy: "bubble_text"/"floating_text" or Step2 route name
     bubble_idx: int      # index of matched bubble, or -1
     overlap: float       # overlap ratio with best bubble
+    semantic_type: str = "unknown"   # "dialogue" | "onomatopoeia" | "unknown"
+    route_state: str = "unknown"     # "bubble_dialogue" | "floating_dialogue" | "onomatopoeia"
+    action: str = "unknown"          # "erase" | "careful_erase" | "skip_protect"
+    raw_class_name: str = ""
+    confidence: float = 0.0
 
 
 def classify_text_regions(
@@ -401,6 +737,92 @@ def classify_text_regions(
         ))
 
     return classified
+
+
+def build_step2_routing_state(
+    semantic_result: SemanticDetectionResult,
+    bubble_masks: List[np.ndarray],
+    cfg: MLConfig,
+    img_w: int,
+    img_h: int,
+) -> List[ClassifiedText]:
+    """
+    Step 2 routing-state builder.
+
+    Produces one of exactly three route states:
+      1) bubble_dialogue   (dialogue + inside bubble)   -> erase
+      2) floating_dialogue (dialogue + outside bubble)  -> careful_erase
+      3) onomatopoeia      (any geometry)               -> skip_protect
+    """
+    routed: List[ClassifiedText] = []
+
+    for region in semantic_result.regions:
+        box = region.box
+        expanded = box.expanded(cfg.mask_padding, img_w, img_h)
+
+        box_area = max(1, box.width * box.height)
+        best_overlap = 0.0
+        best_idx = -1
+
+        for i, bmask in enumerate(bubble_masks):
+            roi = bmask[box.y1:box.y2, box.x1:box.x2]
+            overlap_pixels = np.count_nonzero(roi)
+            ratio = overlap_pixels / box_area
+            if ratio > best_overlap:
+                best_overlap = ratio
+                best_idx = i
+
+        if region.semantic_class == "onomatopoeia":
+            route_state = "onomatopoeia"
+            action = "skip_protect"
+        else:
+            inside = best_overlap >= cfg.bubble_overlap_threshold
+            route_state = "bubble_dialogue" if inside else "floating_dialogue"
+            action = "erase" if inside else "careful_erase"
+
+        routed.append(ClassifiedText(
+            box=box,
+            expanded_box=expanded,
+            text_type=route_state,
+            bubble_idx=best_idx,
+            overlap=best_overlap,
+            semantic_type=region.semantic_class,
+            route_state=route_state,
+            action=action,
+            raw_class_name=region.raw_class_name,
+            confidence=region.confidence,
+        ))
+
+    return routed
+
+
+def draw_step2_routing_debug(
+    image: np.ndarray,
+    routed: List[ClassifiedText],
+) -> np.ndarray:
+    """
+    Step 2 debug drawing:
+      - dialogue routes in Green
+      - onomatopoeia in Red
+    Raw bubble class is not drawn because it is dropped in semantic remap.
+    """
+    debug = image.copy()
+    for ct in routed:
+        if ct.semantic_type == "dialogue":
+            color = (0, 255, 0)
+        elif ct.semantic_type == "onomatopoeia":
+            color = (0, 0, 255)
+        else:
+            continue
+
+        b = ct.box
+        cv2.rectangle(debug, (b.x1, b.y1), (b.x2, b.y2), color, 2)
+        label = f"{ct.route_state} ({ct.raw_class_name}) {ct.confidence:.2f}"
+        cv2.putText(
+            debug, label, (b.x1, max(12, b.y1 - 6)),
+            cv2.FONT_HERSHEY_SIMPLEX, 0.42, color, 1, cv2.LINE_AA,
+        )
+    return debug
 
 
 # ===================================================================
@@ -595,6 +1017,26 @@ def draw_debug_boxes(
     return debug
 
 
+def draw_semantic_class_debug(
+    image: np.ndarray,
+    semantic_result: SemanticDetectionResult,
+) -> np.ndarray:
+    """
+    Draw semantic detector boxes + labels for visual Step-1 verification.
+    """
+    debug = image.copy()
+    for region in semantic_result.regions:
+        b = region.box
+        color = (0, 255, 0) if region.semantic_class == "dialogue" else (0, 0, 255)
+        cv2.rectangle(debug, (b.x1, b.y1), (b.x2, b.y2), color, 2)
+        label = f"{region.semantic_class} ({region.raw_class_name}) {region.confidence:.2f}"
+        cv2.putText(
+            debug, label, (b.x1, max(12, b.y1 - 6)),
+            cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 1, cv2.LINE_AA,
+        )
+    return debug
+
+
 # ===================================================================
 # FULL PIPELINE
 # ===================================================================
@@ -725,6 +1167,116 @@ def run_all_samples(
         print(f"  Saved to {out_dir}/")
 
 
+def run_semantic_test_all_samples(
+    cfg: MLConfig,
+    samples_dir: Path,
+    semantic_handle: SemanticModelHandle,
+):
+    """
+    Step-1 verification utility.
+    Runs semantic model on all known samples and saves:
+      samples/<sampleN>/semantic_test/debug_classes.png
+      samples/<sampleN>/semantic_test/report.json
+    """
+    for sample_name, img_file in SAMPLE_MAP.items():
+        img_path = samples_dir / sample_name / img_file
+        if not img_path.exists():
+            print(f"[SKIP] {img_path} not found")
+            continue
+
+        image = cv2.imread(str(img_path))
+        if image is None:
+            print(f"[SKIP] cannot load {img_path}")
+            continue
+
+        semantic_result = detect_semantic_text_regions(semantic_handle, image, cfg)
+        debug_img = draw_semantic_class_debug(image, semantic_result)
+
+        out_dir = samples_dir / sample_name / "semantic_test"
+        out_dir.mkdir(parents=True, exist_ok=True)
+
+        cv2.imwrite(str(out_dir / "debug_classes.png"), debug_img)
+        report = {
+            "sample": sample_name,
+            "image": img_file,
+            "semantic_model": cfg.semantic_model_path,
+            "num_semantic_detections": len(semantic_result.regions),
+            "regions": [
+                {
+                    "box": r.box.to_dict(),
+                    "class_id": r.class_id,
+                    "raw_class_name": r.raw_class_name,
+                    "semantic_class": r.semantic_class,
+                    "action": r.action,
+                    "confidence": round(r.confidence, 4),
+                }
+                for r in semantic_result.regions
+            ],
+        }
+        (out_dir / "report.json").write_text(json.dumps(report, indent=2))
+        print(f"[Semantic Test] {sample_name}: {len(semantic_result.regions)} detections -> {out_dir}")
+
+
+def run_step2_routing_test(
+    cfg: MLConfig,
+    image_path: Path,
+    semantic_handle: SemanticModelHandle,
+    bubble_model,
+    bubble_device: str,
+):
+    """
+    Step 2 visual test:
+      1) Run Model A semantic detection with class remap (bubble class dropped)
+      2) Use Model B bubble geometry to assign route states
+      3) Draw only dialogue (green) and onomatopoeia (red)
+    """
+    image = cv2.imread(str(image_path))
+    if image is None:
+        raise FileNotFoundError(f"Cannot load step2 test image: {image_path}")
+
+    h, w = image.shape[:2]
+    semantic_result = detect_semantic_text_regions(semantic_handle, image, cfg)
+    bubble_masks = detect_bubbles(bubble_model, bubble_device, image, cfg)
+    routed = build_step2_routing_state(semantic_result, bubble_masks, cfg, w, h)
+
+    debug = draw_step2_routing_debug(image, routed)
+
+    out_dir = image_path.parent / "semantic_test"
+    out_dir.mkdir(parents=True, exist_ok=True)
+    out_img = out_dir / "debug_step2_routing.png"
+    cv2.imwrite(str(out_img), debug)
+
+    report = {
+        "image": str(image_path),
+        "semantic_model": cfg.semantic_model_path,
+        "num_semantic_regions_after_remap": len(semantic_result.regions),
+        "num_bubbles_model_b": len(bubble_masks),
+        "route_counts": {
+            "bubble_dialogue": sum(1 for r in routed if r.route_state == "bubble_dialogue"),
+            "floating_dialogue": sum(1 for r in routed if r.route_state == "floating_dialogue"),
+            "onomatopoeia": sum(1 for r in routed if r.route_state == "onomatopoeia"),
+        },
+        "regions": [
+            {
+                "box": r.box.to_dict(),
+                "raw_class_name": r.raw_class_name,
+                "semantic_type": r.semantic_type,
+                "route_state": r.route_state,
+                "action": r.action,
+                "confidence": round(r.confidence, 4),
+                "bubble_idx": r.bubble_idx,
+                "overlap": round(r.overlap, 4),
+            }
+            for r in routed
+        ],
+    }
+    (out_dir / "report_step2.json").write_text(json.dumps(report, indent=2))
+
+    print(f"[Step2 Test] semantic_regions(after remap): {len(semantic_result.regions)}")
+    print(f"[Step2 Test] bubbles: {len(bubble_masks)}")
+    print(f"[Step2 Test] saved: {out_img}")
+
+
 # ===================================================================
 # CLI
 # ===================================================================
@@ -740,15 +1292,26 @@ def main():
     parser.add_argument("--text-model", type=str, default="models/comictextdetector.pt.onnx")
     parser.add_argument("--bubble-model", type=str, default="models/manga109_bubble/best.pt")
     parser.add_argument("--lama-model", type=str, default="models/lama/lama_fp32.onnx")
+    parser.add_argument("--semantic-model", type=str,
+                        default="models/semantic/comic-text-and-bubble-detector.onnx")
     parser.add_argument("--conf", type=float, default=0.35)
     parser.add_argument("--bubble-conf", type=float, default=0.50)
     parser.add_argument("--overlap", type=float, default=0.50)
     parser.add_argument("--padding", type=int, default=8)
+    parser.add_argument("--semantic-test", action="store_true",
+                        help="Run Step-1 semantic detector test on one image and save labeled output.")
+    parser.add_argument("--semantic-test-all", action="store_true",
+                        help="Run Step-1 semantic detector test on all known samples.")
+    parser.add_argument("--step2-routing-test", action="store_true",
+                        help="Run Step-2 class-remap + routing-state visual test.")
+    parser.add_argument("--semantic-test-image", type=Path,
+                        default=Path("samples/sample4/sample4.jpg"))
     parser.add_argument("--allow-cpu", action="store_true")
     args = parser.parse_args()
 
     cfg = MLConfig(
         text_model_path=args.text_model,
+        semantic_model_path=args.semantic_model,
         bubble_model_path=args.bubble_model,
         lama_model_path=args.lama_model,
         confidence_threshold=args.conf,
@@ -756,6 +1319,68 @@ def main():
         bubble_overlap_threshold=args.overlap,
         mask_padding=args.padding,
     )
+
+    # Step-1 verification mode: semantic detector only (single image)
+    if args.semantic_test:
+        test_image_path = args.semantic_test_image
+
+        # Helpful fallback for this repo's known sample4 filenames.
+        if not test_image_path.exists() and str(args.semantic_test_image).replace("\\", "/") == "samples/sample4/sample4.jpg":
+            candidates = [
+                Path("samples/sample4/sample4.jpg"),
+                Path("samples/sample4/sample 4 i want.jpg"),
+                Path("samples/sample4/sample 4.png"),
+            ]
+            for c in candidates:
+                if c.exists():
+                    test_image_path = c
+                    break
+
+        image = cv2.imread(str(test_image_path))
+        if image is None:
+            raise FileNotFoundError(
+                f"Cannot load semantic test image: {test_image_path}\n"
+                f"Try: samples/sample4/sample4.jpg or samples/sample4/sample 4.png"
+            )
+
+        semantic_handle = load_semantic_model(cfg.semantic_model_path, allow_cpu=args.allow_cpu)
+        semantic_result = detect_semantic_text_regions(semantic_handle, image, cfg)
+        debug_img = draw_semantic_class_debug(image, semantic_result)
+
+        out_dir = test_image_path.parent / "semantic_test"
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out_path = out_dir / "debug_classes.png"
+
+        cv2.imwrite(str(out_path), debug_img)
+        print(f"[Semantic Test] detections: {len(semantic_result.regions)}")
+        print(f"[Semantic Test] image: {test_image_path}")
+        print(f"[Semantic Test] saved: {out_path}")
+        return
+
+    # Step-1 verification mode: semantic detector only (all samples)
+    if args.semantic_test_all:
+        semantic_handle = load_semantic_model(cfg.semantic_model_path, allow_cpu=args.allow_cpu)
+        run_semantic_test_all_samples(cfg, args.samples_dir, semantic_handle)
+        return
+
+    # Step-2 verification mode: class remap + routing state debug
+    if args.step2_routing_test:
+        test_image_path = args.semantic_test_image
+        if not test_image_path.exists() and str(args.semantic_test_image).replace("\\", "/") == "samples/sample4/sample4.jpg":
+            candidates = [
+                Path("samples/sample4/sample4.jpg"),
+                Path("samples/sample4/sample 4 i want.jpg"),
+                Path("samples/sample4/sample 4.png"),
+            ]
+            for c in candidates:
+                if c.exists():
+                    test_image_path = c
+                    break
+
+        semantic_handle = load_semantic_model(cfg.semantic_model_path, allow_cpu=args.allow_cpu)
+        bubble_model, bubble_device = load_bubble_model(cfg.bubble_model_path, allow_cpu=args.allow_cpu)
+        run_step2_routing_test(cfg, test_image_path, semantic_handle, bubble_model, bubble_device)
+        return
 
     print("Loading models...")
     text_session = load_text_model(cfg.text_model_path, allow_cpu=args.allow_cpu)

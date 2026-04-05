@@ -1,0 +1,7 @@
+{
+  "sample": "sample2",
+  "image": "sample 2.jpeg",
+  "semantic_model": "models/semantic/manga-text-detector.pt",
+  "num_semantic_detections": 0,
+  "regions": []
+}

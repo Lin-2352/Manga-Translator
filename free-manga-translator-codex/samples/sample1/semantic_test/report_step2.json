@@ -1,0 +1,115 @@
+{
+  "image": "samples\\sample1\\sample.png",
+  "semantic_model": "models/semantic/comic-text-and-bubble-detector.onnx",
+  "num_semantic_regions_after_remap": 6,
+  "num_bubbles_model_b": 5,
+  "route_counts": {
+    "bubble_dialogue": 0,
+    "floating_dialogue": 5,
+    "onomatopoeia": 1
+  },
+  "regions": [
+    {
+      "box": {
+        "x1": 36,
+        "y1": 571,
+        "x2": 440,
+        "y2": 729,
+        "width": 404,
+        "height": 158
+      },
+      "raw_class_name": "text_bubble",
+      "semantic_type": "dialogue",
+      "route_state": "floating_dialogue",
+      "action": "careful_erase",
+      "confidence": 0.9657,
+      "bubble_idx": 3,
+      "overlap": 0.3838
+    },
+    {
+      "box": {
+        "x1": 1021,
+        "y1": 765,
+        "x2": 1022,
+        "y2": 913,
+        "width": 1,
+        "height": 148
+      },
+      "raw_class_name": "text_bubble",
+      "semantic_type": "dialogue",
+      "route_state": "floating_dialogue",
+      "action": "careful_erase",
+      "confidence": 0.9641,
+      "bubble_idx": -1,
+      "overlap": 0.0
+    },
+    {
+      "box": {
+        "x1": 1021,
+        "y1": 549,
+        "x2": 1022,
+        "y2": 667,
+        "width": 1,
+        "height": 118
+      },
+      "raw_class_name": "text_bubble",
+      "semantic_type": "dialogue",
+      "route_state": "floating_dialogue",
+      "action": "careful_erase",
+      "confidence": 0.9626,
+      "bubble_idx": -1,
+      "overlap": 0.0
+    },
+    {
+      "box": {
+        "x1": 62,
+        "y1": 361,
+        "x2": 450,
+        "y2": 504,
+        "width": 388,
+        "height": 143
+      },
+      "raw_class_name": "text_bubble",
+      "semantic_type": "dialogue",
+      "route_state": "floating_dialogue",
+      "action": "careful_erase",
+      "confidence": 0.954,
+      "bubble_idx": -1,
+      "overlap": 0.0
+    },
+    {
+      "box": {
+        "x1": 1021,
+        "y1": 333,
+        "x2": 1022,
+        "y2": 439,
+        "width": 1,
+        "height": 106
+      },
+      "raw_class_name": "text_bubble",
+      "semantic_type": "dialogue",
+      "route_state": "floating_dialogue",
+      "action": "careful_erase",
+      "confidence": 0.9404,
+      "bubble_idx": -1,
+      "overlap": 0.0
+    },
+    {
+      "box": {
+        "x1": 1021,
+        "y1": 958,
+        "x2": 1022,
+        "y2": 1018,
+        "width": 1,
+        "height": 60
+      },
+      "raw_class_name": "text_free",
+      "semantic_type": "onomatopoeia",
+      "route_state": "onomatopoeia",
+      "action": "skip_protect",
+      "confidence": 0.2144,
+      "bubble_idx": -1,
+      "overlap": 0.0
+    }
+  ]
+}

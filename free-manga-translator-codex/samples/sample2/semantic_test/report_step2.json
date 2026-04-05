@@ -1,0 +1,166 @@
+{
+  "image": "samples\\sample2\\sample 2.jpeg",
+  "semantic_model": "models/semantic/comic-text-and-bubble-detector.onnx",
+  "num_semantic_regions_after_remap": 9,
+  "num_bubbles_model_b": 6,
+  "route_counts": {
+    "bubble_dialogue": 0,
+    "floating_dialogue": 6,
+    "onomatopoeia": 3
+  },
+  "regions": [
+    {
+      "box": {
+        "x1": 66,
+        "y1": 8,
+        "x2": 175,
+        "y2": 61,
+        "width": 109,
+        "height": 53
+      },
+      "raw_class_name": "text_bubble",
+      "semantic_type": "dialogue",
+      "route_state": "floating_dialogue",
+      "action": "careful_erase",
+      "confidence": 0.9626,
+      "bubble_idx": 2,
+      "overlap": 0.4937
+    },
+    {
+      "box": {
+        "x1": 357,
+        "y1": 183,
+        "x2": 358,
+        "y2": 238,
+        "width": 1,
+        "height": 55
+      },
+      "raw_class_name": "text_bubble",
+      "semantic_type": "dialogue",
+      "route_state": "floating_dialogue",
+      "action": "careful_erase",
+      "confidence": 0.9621,
+      "bubble_idx": -1,
+      "overlap": 0.0
+    },
+    {
+      "box": {
+        "x1": 194,
+        "y1": 182,
+        "x2": 358,
+        "y2": 240,
+        "width": 164,
+        "height": 58
+      },
+      "raw_class_name": "text_bubble",
+      "semantic_type": "dialogue",
+      "route_state": "floating_dialogue",
+      "action": "careful_erase",
+      "confidence": 0.961,
+      "bubble_idx": -1,
+      "overlap": 0.0
+    },
+    {
+      "box": {
+        "x1": 283,
+        "y1": 9,
+        "x2": 358,
+        "y2": 64,
+        "width": 75,
+        "height": 55
+      },
+      "raw_class_name": "text_bubble",
+      "semantic_type": "dialogue",
+      "route_state": "floating_dialogue",
+      "action": "careful_erase",
+      "confidence": 0.9607,
+      "bubble_idx": 0,
+      "overlap": 0.1241
+    },
+    {
+      "box": {
+        "x1": 100,
+        "y1": 183,
+        "x2": 171,
+        "y2": 222,
+        "width": 71,
+        "height": 39
+      },
+      "raw_class_name": "text_bubble",
+      "semantic_type": "dialogue",
+      "route_state": "floating_dialogue",
+      "action": "careful_erase",
+      "confidence": 0.9028,
+      "bubble_idx": -1,
+      "overlap": 0.0
+    },
+    {
+      "box": {
+        "x1": 221,
+        "y1": 246,
+        "x2": 249,
+        "y2": 266,
+        "width": 28,
+        "height": 20
+      },
+      "raw_class_name": "text_free",
+      "semantic_type": "onomatopoeia",
+      "route_state": "onomatopoeia",
+      "action": "skip_protect",
+      "confidence": 0.2431,
+      "bubble_idx": 3,
+      "overlap": 0.05
+    },
+    {
+      "box": {
+        "x1": 190,
+        "y1": 111,
+        "x2": 265,
+        "y2": 130,
+        "width": 75,
+        "height": 19
+      },
+      "raw_class_name": "text_free",
+      "semantic_type": "onomatopoeia",
+      "route_state": "onomatopoeia",
+      "action": "skip_protect",
+      "confidence": 0.2266,
+      "bubble_idx": -1,
+      "overlap": 0.0
+    },
+    {
+      "box": {
+        "x1": 195,
+        "y1": 69,
+        "x2": 243,
+        "y2": 102,
+        "width": 48,
+        "height": 33
+      },
+      "raw_class_name": "text_free",
+      "semantic_type": "onomatopoeia",
+      "route_state": "onomatopoeia",
+      "action": "skip_protect",
+      "confidence": 0.2186,
+      "bubble_idx": 0,
+      "overlap": 0.6155
+    },
+    {
+      "box": {
+        "x1": 190,
+        "y1": 111,
+        "x2": 265,
+        "y2": 130,
+        "width": 75,
+        "height": 19
+      },
+      "raw_class_name": "text_bubble",
+      "semantic_type": "dialogue",
+      "route_state": "floating_dialogue",
+      "action": "careful_erase",
+      "confidence": 0.2024,
+      "bubble_idx": -1,
+      "overlap": 0.0
+    }
+  ]
+}

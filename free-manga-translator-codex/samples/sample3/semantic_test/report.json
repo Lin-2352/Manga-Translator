@@ -1,0 +1,112 @@
+{
+  "sample": "sample3",
+  "image": "sample 3.jpg",
+  "semantic_model": "models/semantic/manga-text-detector.pt",
+  "num_semantic_detections": 8,
+  "regions": [
+    {
+      "box": {
+        "x1": 633,
+        "y1": 30,
+        "x2": 664,
+        "y2": 196,
+        "width": 31,
+        "height": 166
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.8525
+    },
+    {
+      "box": {
+        "x1": 649,
+        "y1": 600,
+        "x2": 672,
+        "y2": 680,
+        "width": 23,
+        "height": 80
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.7764
+    },
+    {
+      "box": {
+        "x1": 170,
+        "y1": 572,
+        "x2": 191,
+        "y2": 705,
+        "width": 21,
+        "height": 133
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.6824
+    },
+    {
+      "box": {
+        "x1": 244,
+        "y1": 609,
+        "x2": 265,
+        "y2": 669,
+        "width": 21,
+        "height": 60
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.5071
+    },
+    {
+      "box": {
+        "x1": 317,
+        "y1": 608,
+        "x2": 341,
+        "y2": 652,
+        "width": 24,
+        "height": 44
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.4721
+    },
+    {
+      "box": {
+        "x1": 190,
+        "y1": 572,
+        "x2": 211,
+        "y2": 707,
+        "width": 21,
+        "height": 135
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.402
+    },
+    {
+      "box": {
+        "x1": 71,
+        "y1": 67,
+        "x2": 97,
+        "y2": 214,
+        "width": 26,
+        "height": 147
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.3562
+    },
+    {
+      "box": {
+        "x1": 87,
+        "y1": 67,
+        "x2": 127,
+        "y2": 216,
+        "width": 40,
+        "height": 149
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.2028
+    }
+  ]
+}

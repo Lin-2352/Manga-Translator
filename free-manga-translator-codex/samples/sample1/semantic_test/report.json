@@ -1,0 +1,73 @@
+{
+  "sample": "sample1",
+  "image": "sample.png",
+  "semantic_model": "models/semantic/manga-text-detector.pt",
+  "num_semantic_detections": 5,
+  "regions": [
+    {
+      "box": {
+        "x1": 791,
+        "y1": 1402,
+        "x2": 932,
+        "y2": 1648,
+        "width": 141,
+        "height": 246
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9648
+    },
+    {
+      "box": {
+        "x1": 867,
+        "y1": 1008,
+        "x2": 971,
+        "y2": 1193,
+        "width": 104,
+        "height": 185
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9578
+    },
+    {
+      "box": {
+        "x1": 904,
+        "y1": 619,
+        "x2": 976,
+        "y2": 777,
+        "width": 72,
+        "height": 158
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9411
+    },
+    {
+      "box": {
+        "x1": 58,
+        "y1": 682,
+        "x2": 200,
+        "y2": 891,
+        "width": 142,
+        "height": 209
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9391
+    },
+    {
+      "box": {
+        "x1": 37,
+        "y1": 1055,
+        "x2": 213,
+        "y2": 1322,
+        "width": 176,
+        "height": 267
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9204
+    }
+  ]
+}

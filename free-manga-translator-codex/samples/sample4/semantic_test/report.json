@@ -1,0 +1,203 @@
+{
+  "sample": "sample4",
+  "image": "sample 4.png",
+  "semantic_model": "models/semantic/manga-text-detector.pt",
+  "num_semantic_detections": 15,
+  "regions": [
+    {
+      "box": {
+        "x1": 131,
+        "y1": 380,
+        "x2": 163,
+        "y2": 533,
+        "width": 32,
+        "height": 153
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.934
+    },
+    {
+      "box": {
+        "x1": 165,
+        "y1": 153,
+        "x2": 196,
+        "y2": 280,
+        "width": 31,
+        "height": 127
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.9314
+    },
+    {
+      "box": {
+        "x1": 106,
+        "y1": 668,
+        "x2": 176,
+        "y2": 894,
+        "width": 70,
+        "height": 226
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9267
+    },
+    {
+      "box": {
+        "x1": 464,
+        "y1": 170,
+        "x2": 487,
+        "y2": 309,
+        "width": 23,
+        "height": 139
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.923
+    },
+    {
+      "box": {
+        "x1": 617,
+        "y1": 59,
+        "x2": 644,
+        "y2": 177,
+        "width": 27,
+        "height": 118
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.913
+    },
+    {
+      "box": {
+        "x1": 136,
+        "y1": 153,
+        "x2": 166,
+        "y2": 283,
+        "width": 30,
+        "height": 130
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.9116
+    },
+    {
+      "box": {
+        "x1": 595,
+        "y1": 58,
+        "x2": 618,
+        "y2": 178,
+        "width": 23,
+        "height": 120
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.9107
+    },
+    {
+      "box": {
+        "x1": 196,
+        "y1": 155,
+        "x2": 223,
+        "y2": 235,
+        "width": 27,
+        "height": 80
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.9094
+    },
+    {
+      "box": {
+        "x1": 100,
+        "y1": 380,
+        "x2": 132,
+        "y2": 512,
+        "width": 32,
+        "height": 132
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.8947
+    },
+    {
+      "box": {
+        "x1": 546,
+        "y1": 58,
+        "x2": 586,
+        "y2": 194,
+        "width": 40,
+        "height": 136
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.8562
+    },
+    {
+      "box": {
+        "x1": 486,
+        "y1": 170,
+        "x2": 514,
+        "y2": 273,
+        "width": 28,
+        "height": 103
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.8542
+    },
+    {
+      "box": {
+        "x1": 539,
+        "y1": 561,
+        "x2": 590,
+        "y2": 767,
+        "width": 51,
+        "height": 206
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.8393
+    },
+    {
+      "box": {
+        "x1": 515,
+        "y1": 170,
+        "x2": 539,
+        "y2": 272,
+        "width": 24,
+        "height": 102
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.7588
+    },
+    {
+      "box": {
+        "x1": 568,
+        "y1": 59,
+        "x2": 595,
+        "y2": 158,
+        "width": 27,
+        "height": 99
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.5198
+    },
+    {
+      "box": {
+        "x1": 603,
+        "y1": 384,
+        "x2": 624,
+        "y2": 455,
+        "width": 21,
+        "height": 71
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.328
+    }
+  ]
+}

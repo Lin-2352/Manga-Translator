@@ -1,0 +1,125 @@
+{
+  "sample": "sample5",
+  "image": "sample 5.jpg",
+  "semantic_model": "models/semantic/manga-text-detector.pt",
+  "num_semantic_detections": 9,
+  "regions": [
+    {
+      "box": {
+        "x1": 1024,
+        "y1": 1127,
+        "x2": 1108,
+        "y2": 1286,
+        "width": 84,
+        "height": 159
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9684
+    },
+    {
+      "box": {
+        "x1": 45,
+        "y1": 223,
+        "x2": 196,
+        "y2": 455,
+        "width": 151,
+        "height": 232
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9643
+    },
+    {
+      "box": {
+        "x1": 172,
+        "y1": 1171,
+        "x2": 281,
+        "y2": 1357,
+        "width": 109,
+        "height": 186
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9634
+    },
+    {
+      "box": {
+        "x1": 349,
+        "y1": 171,
+        "x2": 425,
+        "y2": 356,
+        "width": 76,
+        "height": 185
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9608
+    },
+    {
+      "box": {
+        "x1": 313,
+        "y1": 1085,
+        "x2": 486,
+        "y2": 1321,
+        "width": 173,
+        "height": 236
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9594
+    },
+    {
+      "box": {
+        "x1": 1121,
+        "y1": 1523,
+        "x2": 1160,
+        "y2": 1639,
+        "width": 39,
+        "height": 116
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9228
+    },
+    {
+      "box": {
+        "x1": 542,
+        "y1": 166,
+        "x2": 632,
+        "y2": 256,
+        "width": 90,
+        "height": 90
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9147
+    },
+    {
+      "box": {
+        "x1": 897,
+        "y1": 1510,
+        "x2": 1073,
+        "y2": 1690,
+        "width": 176,
+        "height": 180
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9129
+    },
+    {
+      "box": {
+        "x1": 723,
+        "y1": 197,
+        "x2": 759,
+        "y2": 281,
+        "width": 36,
+        "height": 84
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.8705
+    }
+  ]
+}

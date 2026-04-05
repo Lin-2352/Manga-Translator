@@ -1,0 +1,164 @@
+{
+  "sample": "sample6",
+  "image": "sample 6.jpg",
+  "semantic_model": "models/semantic/manga-text-detector.pt",
+  "num_semantic_detections": 12,
+  "regions": [
+    {
+      "box": {
+        "x1": 874,
+        "y1": 850,
+        "x2": 956,
+        "y2": 1022,
+        "width": 82,
+        "height": 172
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.964
+    },
+    {
+      "box": {
+        "x1": 320,
+        "y1": 881,
+        "x2": 460,
+        "y2": 1205,
+        "width": 140,
+        "height": 324
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9502
+    },
+    {
+      "box": {
+        "x1": 522,
+        "y1": 846,
+        "x2": 575,
+        "y2": 952,
+        "width": 53,
+        "height": 106
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9451
+    },
+    {
+      "box": {
+        "x1": 297,
+        "y1": 159,
+        "x2": 400,
+        "y2": 423,
+        "width": 103,
+        "height": 264
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9394
+    },
+    {
+      "box": {
+        "x1": 1128,
+        "y1": 860,
+        "x2": 1231,
+        "y2": 1159,
+        "width": 103,
+        "height": 299
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.9358
+    },
+    {
+      "box": {
+        "x1": 865,
+        "y1": 1391,
+        "x2": 1049,
+        "y2": 1717,
+        "width": 184,
+        "height": 326
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.928
+    },
+    {
+      "box": {
+        "x1": 736,
+        "y1": 841,
+        "x2": 778,
+        "y2": 954,
+        "width": 42,
+        "height": 113
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.9109
+    },
+    {
+      "box": {
+        "x1": 637,
+        "y1": 1330,
+        "x2": 685,
+        "y2": 1430,
+        "width": 48,
+        "height": 100
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.8935
+    },
+    {
+      "box": {
+        "x1": 651,
+        "y1": 839,
+        "x2": 734,
+        "y2": 1266,
+        "width": 83,
+        "height": 427
+      },
+      "class_id": 1,
+      "class_name": "qipao",
+      "confidence": 0.8381
+    },
+    {
+      "box": {
+        "x1": 60,
+        "y1": 103,
+        "x2": 116,
+        "y2": 420,
+        "width": 56,
+        "height": 317
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.7658
+    },
+    {
+      "box": {
+        "x1": 693,
+        "y1": 838,
+        "x2": 734,
+        "y2": 1233,
+        "width": 41,
+        "height": 395
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.7545
+    },
+    {
+      "box": {
+        "x1": 102,
+        "y1": 812,
+        "x2": 203,
+        "y2": 1475,
+        "width": 101,
+        "height": 663
+      },
+      "class_id": 0,
+      "class_name": "balloon",
+      "confidence": 0.4494
+    }
+  ]
+}
